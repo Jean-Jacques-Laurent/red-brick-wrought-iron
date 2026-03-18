@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<title>J &amp; K</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<style>
+:root {
+  --burgundy: #461324;
+  --burgundy-light: #5e1f35;
+  --steel: #9eadbf;
+  --steel-dark: #8494a8;
+  --olive: #524823;
+  --olive-light: #6b5f34;
+  --warm-gray: #b8b7a8;
+  --pale: #e8e7e5;
+  --off-white: #f4f3f2;
+  --white: #faf9f8;
+  --near-black: #1a1a1a;
+  --dark: #2d2d2d;
+  --mid: #6b6b6b;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: 'EB Garamond', 'Georgia', serif;
+  background: var(--white);
+  color: var(--olive);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Password Gate ── */
+#gate {
+  position: fixed; inset: 0; z-index: 10000;
+  background: var(--burgundy);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity .8s, visibility .8s;
+}
+#gate.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.gate-wrap { text-align: center; width: 90%; max-width: 380px; }
+.gate-mark {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700; font-size: 2.8rem; color: var(--pale);
+  line-height: 1; margin-bottom: .3rem;
+  opacity: 0; animation: gU 1s ease .2s forwards;
+}
+.gate-sub {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 400; font-size: .85rem; color: var(--steel);
+  letter-spacing: .08em; margin-bottom: 3.5rem;
+  opacity: 0; animation: gU 1s ease .4s forwards;
+}
+.gate-label {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: .6rem; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--warm-gray);
+  margin-bottom: 1rem;
+  opacity: 0; animation: gU 1s ease .6s forwards;
+}
+.gate-input {
+  width: 100%; background: 0 0; border: none;
+  border-bottom: 1px solid var(--steel-dark);
+  padding: .7rem 0;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 400; font-size: .95rem; letter-spacing: .1em;
+  color: var(--pale); text-align: center; outline: 0;
+  transition: border-color .4s;
+  opacity: 0; animation: gU 1s ease .8s forwards;
+}
+.gate-input::placeholder { color: var(--steel-dark); }
+.gate-input:focus { border-color: var(--pale); }
+.gate-btn {
+  margin-top: 2rem; background: transparent;
+  border: 1px solid var(--steel);
+  padding: .75rem 3.5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400; font-size: .6rem; letter-spacing: .35em;
+  text-transform: uppercase; color: var(--pale);
+  cursor: pointer; transition: background .3s, color .3s;
+  opacity: 0; animation: gU 1s ease 1s forwards;
+}
+.gate-btn:hover { background: var(--pale); color: var(--burgundy); }
+.gate-err { margin-top: 1rem; font-size: .75rem; color: var(--warm-gray); min-height: 1em; }
+@keyframes gU {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Site Container ── */
+#site { display: none; }
+#site.visible { display: block; }
+
+/* ── Header ── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 2.5rem; background: 0 0;
+  transition: background .5s, box-shadow .5s;
+}
+header.scrolled {
+  background: rgba(250, 249, 248, .97);
+  box-shadow: 0 1px 0 rgba(0,0,0,.06);
+}
+header.dm.scrolled {
+  background: rgba(26, 26, 26, .97);
+  box-shadow: 0 1px 0 rgba(255,255,255,.04);
+}
+.hdr-brand {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700; font-size: 1.1rem; color: var(--burgundy);
+  text-decoration: none; cursor: pointer; line-height: 1;
+}
+header.dm .hdr-brand { color: var(--pale); }
+.hdr-menu {
+  display: flex; align-items: center; gap: .7rem;
+  cursor: pointer; background: 0 0; border: none;
+}
+.hdr-menu-icon { display: flex; flex-direction: column; gap: 5px; width: 22px; }
+.hdr-menu-icon span {
+  display: block; height: 1.5px; width: 100%;
+  background: var(--olive); transition: background .3s;
+}
+header.dm .hdr-menu-icon span { background: var(--warm-gray); }
+.hdr-menu-text {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400; font-size: .6rem; letter-spacing: .25em;
+  text-transform: uppercase; color: var(--olive); transition: color .3s;
+}
+header.dm .hdr-menu-text { color: var(--warm-gray); }
+
+/* ── Nav Overlay ── */
+.nav-ov {
+  position: fixed; inset: 0; z-index: 9000;
+  background: var(--burgundy);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden; transition: opacity .4s, visibility .4s;
+}
+.nav-ov.open { opacity: 1; visibility: visible; }
+.nav-ov-close {
+  position: absolute; top: 1.4rem; right: 2.5rem;
+  background: 0 0; border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: .6rem; letter-spacing: .25em;
+  text-transform: uppercase; color: var(--warm-gray);
+  cursor: pointer; display: flex; align-items: center; gap: .7rem;
+}
+.nav-ov-close::after { content: "\00d7"; font-size: 1.4rem; font-weight: 300; color: var(--steel); }
+.nav-ov ul { list-style: none; text-align: center; }
+.nav-ov li { margin-bottom: 1.8rem; }
+.nav-ov a {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 400; font-size: clamp(1.4rem, 3vw, 2rem);
+  color: var(--warm-gray); text-decoration: none;
+  cursor: pointer; transition: color .3s; letter-spacing: .02em;
+}
+.nav-ov a:hover { color: var(--pale); }
+
+/* ── Pages ── */
+.page { display: none; min-height: 100vh; opacity: 0; transition: opacity .5s; }
+.page.active { display: block; }
+.page.show { opacity: 1; }
+
+/* ── Home ── */
+.home {
+  min-height: 100vh; background: var(--near-black);
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; position: relative; padding: 2rem;
+}
+.home-content { position: relative; z-index: 1; }
+.home-wordmark {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700; font-size: clamp(4rem, 12vw, 10rem);
+  line-height: .9; color: var(--pale); margin-bottom: 2rem;
+}
+.home-wordmark .home-amp {
+  display: block; font-weight: 400; font-style: italic;
+  font-size: .3em; color: var(--steel); margin: .6em 0; letter-spacing: .1em;
+}
+.home-info {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: .65rem; letter-spacing: .35em;
+  text-transform: uppercase; color: var(--steel-dark); line-height: 2.5;
+}
+.home-div { width: 1px; height: 50px; background: var(--olive); margin: 2.5rem auto; opacity: .5; }
+.home-enter {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: .58rem; letter-spacing: .35em;
+  text-transform: uppercase; color: var(--steel-dark);
+  cursor: pointer; background: 0 0; border: none; transition: color .3s;
+}
+.home-enter:hover { color: var(--warm-gray); }
+
+/* ── Inner Page Header ── */
+.ih { padding: 9rem 2.5rem 4rem; text-align: center; }
+.ih .ih-label {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: .55rem; letter-spacing: .45em;
+  text-transform: uppercase; color: var(--steel); margin-bottom: 1.2rem;
+}
+.ih h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 400; font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--burgundy); font-style: italic;
+}
+.ib { max-width: 640px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+/* ── Events ── */
+.evt { margin-bottom: 4rem; text-align: center; }
+.evt:last-of-type { margin-bottom: 2rem; }
+.evt-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500; font-size: 1.5rem; color: var(--burgundy); margin-bottom: 1.8rem;
+}
+.evt-row { display: flex; justify-content: center; }
+.evt-col { flex: 1; padding: 1.2rem 2rem; text-align: center; }
+.evt-col + .evt-col { border-left: 1px solid var(--pale); }
+.evt-lbl {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: .55rem; letter-spacing: .35em;
+  text-transform: uppercase; color: var(--steel); margin-bottom: .5rem;
+}
+.evt-val {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 400; font-size: 1rem; color: var(--olive); line-height: 1.5;
+}
+.evt-sep { width: 30px; height: 1px; background: var(--pale); margin: 3rem auto; }
+.evt-quote {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic; font-weight: 400; font-size: 1.1rem;
+  color: var(--steel); text-align: center;
+  max-width: 420px; margin: 3rem auto 0; line-height: 1.85;
+}
+
+/* ── Travel ── */
+.trv-s { margin-bottom: 3.5rem; }
+.trv-h {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500; font-size: 1.2rem; color: var(--burgundy);
+  margin-bottom: 1.5rem; padding-bottom: .8rem;
+  border-bottom: 1px solid var(--pale);
+}
+.htl { margin-bottom: 2.2rem; }
+.htl-n {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500; font-size: 1.05rem; color: var(--burgundy); margin-bottom: .4rem;
+}
+.htl-d {
+  font-weight: 400; font-size: .92rem; color: var(--mid);
+  line-height: 1.75; margin-bottom: .6rem;
+}
+.htl-c {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400; font-size: .6rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--olive);
+}
+.trv-t { font-weight: 400; font-size: .95rem; color: var(--mid); line-height: 1.85; }
+
+/* ── Registry ── */
+.reg-intro {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic; font-weight: 400; font-size: 1.1rem;
+  color: var(--steel-dark); text-align: center;
+  line-height: 1.85; margin-bottom: 3rem;
+}
+.reg-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.6rem 0; border-bottom: 1px solid var(--pale);
+}
+.reg-item:first-child { border-top: 1px solid var(--pale); }
+.reg-info h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500; font-size: 1.05rem; color: var(--burgundy); margin-bottom: .2rem;
+}
+.reg-info p { font-weight: 400; font-size: .85rem; color: var(--steel); }
+.reg-link {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400; font-size: .55rem; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--white);
+  background: var(--burgundy); text-decoration: none;
+  padding: .55rem 1.6rem; transition: background .3s; white-space: nowrap;
+}
+.reg-link:hover { background: var(--burgundy-light); }
+
+/* ── RSVP ── */
+.rsvp-form { max-width: 460px; margin: 0 auto; }
+.fld { margin-bottom: 1.8rem; }
+.fld-label {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: .55rem; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--steel); margin-bottom: .6rem;
+}
+.fld input[type="text"], .fld select, .fld textarea {
+  width: 100%; background: 0 0; border: none;
+  border-bottom: 1px solid var(--pale);
+  padding: .65rem 0;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 400; font-size: .95rem;
+  color: var(--near-black); outline: 0; transition: border-color .3s;
+}
+.fld input:focus, .fld select:focus, .fld textarea:focus { border-color: var(--burgundy); }
+.fld select { cursor: pointer; }
+.fld textarea { border: 1px solid var(--pale); padding: .9rem; min-height: 80px; resize: vertical; }
+.rdo-row { display: flex; gap: 2rem; }
+.rdo { display: flex; align-items: center; gap: .5rem; cursor: pointer; }
+.rdo input[type="radio"] {
+  appearance: none; -webkit-appearance: none;
+  width: 15px; height: 15px; border: 1.5px solid var(--warm-gray);
+  border-radius: 50%; cursor: pointer; position: relative;
+  transition: border-color .3s; flex-shrink: 0;
+}
+.rdo input[type="radio"]:checked { border-color: var(--burgundy); }
+.rdo input[type="radio"]:checked::after {
+  content: ''; position: absolute; top: 2.5px; left: 2.5px;
+  width: 8px; height: 8px; background: var(--burgundy); border-radius: 50%;
+}
+.rdo span { font-family: 'Playfair Display', Georgia, serif; font-size: .92rem; color: var(--olive); }
+.cond { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .5s, opacity .4s; }
+.cond.open { max-height: 600px; opacity: 1; }
+.rsvp-btn {
+  display: block; width: 100%; margin-top: .5rem; padding: .9rem;
+  background: var(--burgundy); border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400; font-size: .6rem; letter-spacing: .4em;
+  text-transform: uppercase; color: var(--pale);
+  cursor: pointer; transition: background .3s;
+}
+.rsvp-btn:hover { background: var(--burgundy-light); }
+.rsvp-btn:disabled { opacity: .5; cursor: not-allowed; }
+.rsvp-done { display: none; text-align: center; padding: 4rem 0; }
+.rsvp-done.show { display: block; }
+.rsvp-done h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 400; font-size: 1.8rem; font-style: italic;
+  color: var(--burgundy); margin-bottom: 1rem;
+}
+.rsvp-done p { font-weight: 400; font-size: .92rem; color: var(--steel); }
+.rsvp-err { color: #a94442; font-size: .85rem; text-align: center; margin-top: 1rem; display: none; }
+
+/* ── NYC Map ── */
+.map-intro {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic; font-weight: 400; font-size: 1.1rem;
+  color: var(--steel-dark); text-align: center;
+  line-height: 1.85; margin-bottom: 2.5rem;
+}
+#nyc-map {
+  width: 100%; height: 480px; border: 1px solid var(--pale);
+  margin-bottom: 2.5rem;
+}
+.spot-list { list-style: none; }
+.spot-list li {
+  padding: 1.4rem 0; border-bottom: 1px solid var(--pale);
+}
+.spot-list li:first-child { border-top: 1px solid var(--pale); }
+.spot-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500; font-size: 1.05rem; color: var(--burgundy); margin-bottom: .3rem;
+}
+.spot-desc { font-weight: 400; font-size: .88rem; color: var(--mid); line-height: 1.7; }
+.spot-cat {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400; font-size: .55rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--steel); margin-top: .4rem;
+}
+
+/* ── Footer ── */
+.ft {
+  border-top: 1px solid var(--pale); padding: 2.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.ft-l {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: .55rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--warm-gray);
+}
+.ft-r {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700; font-size: .7rem; color: var(--burgundy);
+}
+
+/* ── Reveal Animation ── */
+.rv { opacity: 0; transform: translateY(20px); transition: opacity .7s, transform .7s; }
+.rv.vis { opacity: 1; transform: translateY(0); }
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  header { padding: 1rem 1.5rem; }
+  .ih { padding: 7rem 1.5rem 3rem; }
+  .ib { padding: 2rem 1.5rem 4rem; }
+  .evt-row { flex-direction: column; }
+  .evt-col + .evt-col { border-left: none; border-top: 1px solid var(--pale); }
+  .reg-item { flex-direction: column; gap: 1rem; text-align: center; }
+  .ft { flex-direction: column; gap: .8rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-wrap">
+    <div class="gate-mark">J&K</div>
+    <div class="gate-sub">Jack &amp; Katie</div>
+    <div class="gate-label">Enter the password from your invitation</div>
+    <input class="gate-input" type="password" id="gate-pw" placeholder="Password" autocomplete="off">
+    <button class="gate-btn" onclick="unlock()">Enter</button>
+    <div class="gate-err" id="gate-err"></div>
+  </div>
+</div>
+
+<div id="site">
+  <header id="hdr">
+    <a class="hdr-brand" onclick="go('home')">J&amp;K</a>
+    <button class="hdr-menu" onclick="openNav()">
+      <div class="hdr-menu-icon"><span></span><span></span><span></span></div>
+      <span class="hdr-menu-text">Menu</span>
+    </button>
+  </header>
+
+  <div class="nav-ov" id="nav-ov">
+    <button class="nav-ov-close" onclick="closeNav()">Close</button>
+    <ul>
+      <li><a onclick="navGo('home')">Home</a></li>
+      <li><a onclick="navGo('event')">The Day</a></li>
+      <li><a onclick="navGo('travel')">Travel &amp; Stay</a></li>
+      <li><a onclick="navGo('registry')">Registry</a></li>
+      <li><a onclick="navGo('nyc')">Our NYC</a></li>
+      <li><a onclick="navGo('rsvp')">RSVP</a></li>
+    </ul>
+  </div>
+
+  <div class="page active show" id="pg-home">
+    <section class="home">
+      <div class="home-content">
+        <h1 class="home-wordmark">Jack<span class="home-amp">&amp;</span>Katie</h1>
+        <div class="home-info">The Hotel Chelsea<br>New York City</div>
+        <div class="home-div"></div>
+        <button class="home-enter" onclick="go('event')">Explore the Details</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="page" id="pg-event">
+    <div class="ih"><div class="ih-label">Celebration</div><h2>The Day</h2></div>
+    <div class="ib"><div class="rv">
+      <div class="evt">
+        <div class="evt-name">Ceremony</div>
+        <div class="evt-row">
+          <div class="evt-col"><div class="evt-lbl">Time</div><div class="evt-val">Five o'clock<br>in the evening</div></div>
+          <div class="evt-col"><div class="evt-lbl">Location</div><div class="evt-val">The Hotel Chelsea<br>222 W 23rd St, New York</div></div>
+        </div>
+      </div>
+      <div class="evt-sep"></div>
+      <div class="evt">
+        <div class="evt-name">Reception</div>
+        <div class="evt-row">
+          <div class="evt-col"><div class="evt-lbl">Time</div><div class="evt-val">Half past six<br>until late</div></div>
+          <div class="evt-col"><div class="evt-lbl">Location</div><div class="evt-val">The Hotel Chelsea<br>The Ballroom</div></div>
+        </div>
+      </div>
+      <div class="evt-sep"></div>
+      <div class="evt">
+        <div class="evt-row">
+          <div class="evt-col"><div class="evt-lbl">Attire</div><div class="evt-val">Black Tie Optional</div></div>
+          <div class="evt-col"><div class="evt-lbl">The Evening</div><div class="evt-val">Cocktails, dinner<br>&amp; dancing to follow</div></div>
+        </div>
+      </div>
+      <div class="evt-quote">&ldquo;We would be honored to have you join us as we begin this next chapter.&rdquo;</div>
+    </div></div>
+  </div>
+
+  <div class="page" id="pg-travel">
+    <div class="ih"><div class="ih-label">Getting There</div><h2>Travel &amp; Stay</h2></div>
+    <div class="ib"><div class="rv">
+      <div class="trv-s">
+        <div class="trv-h">The Venue</div>
+        <div class="htl">
+          <div class="htl-n">The Hotel Chelsea</div>
+          <div class="htl-d">A storied landmark in the heart of Manhattan. Since 1884, the Chelsea has been a home to artists, writers, and dreamers. We are thrilled to celebrate here among its walls.</div>
+          <div class="htl-c">222 West 23rd Street, New York, NY 10011</div>
+        </div>
+      </div>
+      <div class="trv-s">
+        <div class="trv-h">Nearby Accommodations</div>
+        <div class="htl">
+          <div class="htl-n">The Hotel Chelsea</div>
+          <div class="htl-d">A limited room block has been reserved for wedding guests at the venue itself. Book early to secure your room in this iconic space.</div>
+          <div class="htl-c">Group rate available &bull; Code: JACKANDKATIE</div>
+        </div>
+        <div class="htl">
+          <div class="htl-n">The High Line Hotel</div>
+          <div class="htl-d">A charming boutique hotel in a Gothic-revival seminary building, just a short walk from the Chelsea along the High Line.</div>
+          <div class="htl-c">180 Tenth Avenue &bull; Code: JACKANDKATIE</div>
+        </div>
+      </div>
+      <div class="trv-s">
+        <div class="trv-h">Getting There</div>
+        <p class="trv-t">The Hotel Chelsea is located in the Chelsea neighborhood of Manhattan, steps from the 23rd Street subway stations (C/E and 1 lines) and a short walk from Penn Station.</p>
+        <br>
+        <p class="trv-t">For those driving, nearby garages are available on 23rd and 24th Streets. Detailed directions and transportation options will be sent closer to the date.</p>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="page" id="pg-registry">
+    <div class="ih"><div class="ih-label">With Gratitude</div><h2>Registry</h2></div>
+    <div class="ib"><div class="rv">
+      <div class="reg-intro">Your presence is the greatest gift.<br>Should you wish to honor us further,<br>we have registered at the following.</div>
+      <div class="reg-item"><div class="reg-info"><h3>Crate &amp; Barrel</h3><p>Home essentials and kitchen favorites</p></div><a href="#" class="reg-link" target="_blank" rel="noopener noreferrer">View</a></div>
+      <div class="reg-item"><div class="reg-info"><h3>Zola</h3><p>A curated mix of items and experiences</p></div><a href="#" class="reg-link" target="_blank" rel="noopener noreferrer">View</a></div>
+      <div class="reg-item"><div class="reg-info"><h3>Honeymoon Fund</h3><p>Contribute to our first adventure together</p></div><a href="#" class="reg-link" target="_blank" rel="noopener noreferrer">Contribute</a></div>
+    </div></div>
+  </div>
+
+  <div class="page" id="pg-nyc">
+    <div class="ih"><div class="ih-label">Explore</div><h2>Our NYC</h2></div>
+    <div class="ib" style="max-width:720px"><div class="rv">
+      <div class="map-intro">A few of our favorite places in the city&mdash;<br>for those who&rsquo;d like to explore while you&rsquo;re here.</div>
+      <div id="nyc-map"></div>
+      <ul class="spot-list" id="spot-list"></ul>
+    </div></div>
+  </div>
+
+  <div class="page" id="pg-rsvp">
+    <div class="ih"><div class="ih-label">Kindly Respond</div><h2>RSVP</h2></div>
+    <div class="ib"><div class="rv">
+      <div class="rsvp-form" id="rsvp-form">
+        <div class="fld"><label class="fld-label" for="r-name">Your Full Name</label><input type="text" id="r-name" placeholder="First and Last"></div>
+        <div class="fld"><label class="fld-label">Will You Be Joining Us?</label><div class="rdo-row"><label class="rdo"><input type="radio" name="att" value="yes" onchange="togAtt()"><span>Joyfully Accepts</span></label><label class="rdo"><input type="radio" name="att" value="no" onchange="togAtt()"><span>Regretfully Declines</span></label></div></div>
+        <div class="cond" id="att-fields">
+          <div class="fld"><label class="fld-label" for="r-meal">Dinner Selection</label><select id="r-meal"><option value="">Choose an option</option><option value="beef">Filet Mignon</option><option value="fish">Pan-Seared Salmon</option><option value="veg">Herb-Roasted Vegetable Tower</option><option value="vegan">Vegan Garden Plate</option></select></div>
+          <div class="fld"><label class="fld-label">Plus One?</label><div class="rdo-row"><label class="rdo"><input type="radio" name="po" value="yes" onchange="togPO()"><span>Yes</span></label><label class="rdo"><input type="radio" name="po" value="no" onchange="togPO()"><span>No</span></label></div></div>
+          <div class="cond" id="po-fields">
+            <div class="fld"><label class="fld-label" for="r-poname">Guest's Name</label><input type="text" id="r-poname" placeholder="First and Last"></div>
+            <div class="fld"><label class="fld-label" for="r-pomeal">Guest's Dinner Selection</label><select id="r-pomeal"><option value="">Choose an option</option><option value="beef">Filet Mignon</option><option value="fish">Pan-Seared Salmon</option><option value="veg">Herb-Roasted Vegetable Tower</option><option value="vegan">Vegan Garden Plate</option></select></div>
+          </div>
+          <div class="fld"><label class="fld-label" for="r-notes">Dietary Needs or a Note</label><textarea id="r-notes" placeholder="Allergies, restrictions, or a kind word..."></textarea></div>
+        </div>
+        <button class="rsvp-btn" onclick="sendRSVP()">Send Response</button>
+        <div class="rsvp-err" id="rsvp-err"></div>
+      </div>
+      <div class="rsvp-done" id="rsvp-done"><h3>Thank You</h3><p id="done-msg">We cannot wait to celebrate with you.</p></div>
+    </div></div>
+  </div>
+
+  <div class="ft"><div class="ft-l">Private &bull; Not Indexed &bull; No Tracking</div><div class="ft-r">J&amp;K</div></div>
+</div>
+
+<script>
+const EXPECTED_HASH='e64a72d0a3643b36bc78ad0274c90c76a597e6508666c4d60afbf2bbd13ea94a';
+async function hashStr(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function unlock(){const h=await hashStr(document.getElementById('gate-pw').value);if(h===EXPECTED_HASH){document.getElementById('gate').classList.add('hidden');document.getElementById('site').classList.add('visible');setHM();initRv()}else{document.getElementById('gate-err').textContent='Incorrect password.';document.getElementById('gate-pw').value=''}}
+document.getElementById('gate-pw').addEventListener('keydown',e=>{if(e.key==='Enter')unlock()});
+let cp='home';
+function setHM(){const h=document.getElementById('hdr');if(cp==='home')h.classList.add('dm');else h.classList.remove('dm')}
+function go(p){const c=document.getElementById('pg-'+cp);c.classList.remove('show');setTimeout(()=>{c.classList.remove('active');const n=document.getElementById('pg-'+p);n.classList.add('active');window.scrollTo({top:0,behavior:'instant'});cp=p;setHM();requestAnimationFrame(()=>{requestAnimationFrame(()=>{n.classList.add('show');initRv();if(p==='nyc'){initMap();setTimeout(()=>nycMap.invalidateSize(),100)}})})},300)}
+function openNav(){document.getElementById('nav-ov').classList.add('open')}
+function closeNav(){document.getElementById('nav-ov').classList.remove('open')}
+function navGo(p){closeNav();setTimeout(()=>go(p),250)}
+window.addEventListener('scroll',()=>{document.getElementById('hdr').classList.toggle('scrolled',window.scrollY>40)});
+function initRv(){document.querySelectorAll('.rv').forEach(el=>{const o=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');o.unobserve(e.target)}})},{threshold:.1});o.observe(el)})}
+function togAtt(){document.getElementById('att-fields').classList.toggle('open',document.querySelector('input[name="att"]:checked')?.value==='yes')}
+function togPO(){document.getElementById('po-fields').classList.toggle('open',document.querySelector('input[name="po"]:checked')?.value==='yes')}
+/*
+ * ── Google Apps Script Setup ──
+ * 1. Go to https://script.google.com → New Project
+ * 2. Paste this code into Code.gs:
+ *
+ *   const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID';
+ *   const NOTIFY_EMAIL = 'your@email.com';
+ *
+ *   function doPost(e) {
+ *     const data = JSON.parse(e.postData.contents);
+ *     const ss = SpreadsheetApp.openById(SHEET_ID);
+ *     let sheet = ss.getSheetByName('RSVPs');
+ *     if (!sheet) {
+ *       sheet = ss.insertSheet('RSVPs');
+ *       sheet.appendRow(['Timestamp','Name','Attending','Meal','Plus One','Guest Name','Guest Meal','Notes']);
+ *     }
+ *     sheet.appendRow([
+ *       data.ts, data.name, data.attending, data.meal,
+ *       data.plusOne, data.plusOneName, data.plusOneMeal, data.notes
+ *     ]);
+ *     const subj = data.attending === 'yes'
+ *       ? '🎉 RSVP: ' + data.name + ' accepts!'
+ *       : '📝 RSVP: ' + data.name + ' declines';
+ *     let body = 'Name: ' + data.name + '\nAttending: ' + data.attending;
+ *     if (data.attending === 'yes') {
+ *       body += '\nMeal: ' + data.meal;
+ *       if (data.plusOne === 'yes') body += '\nPlus One: ' + data.plusOneName + ' (' + data.plusOneMeal + ')';
+ *       if (data.notes) body += '\nNotes: ' + data.notes;
+ *     }
+ *     MailApp.sendEmail(NOTIFY_EMAIL, subj, body);
+ *     return ContentService.createTextOutput(JSON.stringify({result:'ok'}))
+ *       .setMimeType(ContentService.MimeType.JSON);
+ *   }
+ *
+ * 3. Deploy → New Deployment → Web App → Execute as: Me, Access: Anyone
+ * 4. Copy the URL and paste it below as APPS_SCRIPT_URL
+ */
+const APPS_SCRIPT_URL = '';
+
+async function sendRSVP(){
+  const n=document.getElementById('r-name').value.trim();
+  const a=document.querySelector('input[name="att"]:checked')?.value;
+  if(!n){alert('Please enter your name.');return}
+  if(!a){alert('Please let us know if you can attend.');return}
+  const d={name:n,attending:a,meal:document.getElementById('r-meal').value,plusOne:document.querySelector('input[name="po"]:checked')?.value||'no',plusOneName:document.getElementById('r-poname').value.trim(),plusOneMeal:document.getElementById('r-pomeal').value,notes:document.getElementById('r-notes').value.trim(),ts:new Date().toISOString()};
+  const btn=document.querySelector('.rsvp-btn');
+  const errEl=document.getElementById('rsvp-err');
+  btn.disabled=true;btn.textContent='SENDING...';errEl.style.display='none';
+  if(!APPS_SCRIPT_URL){console.log('RSVP (no endpoint configured):',d);showDone(a);return}
+  try{
+    const r=await fetch(APPS_SCRIPT_URL,{method:'POST',body:JSON.stringify(d)});
+    if(!r.ok)throw new Error('status '+r.status);
+    showDone(a);
+  }catch(e){
+    console.error('RSVP error:',e);
+    errEl.textContent='Something went wrong. Please try again.';errEl.style.display='block';
+    btn.disabled=false;btn.textContent='SEND RESPONSE';
+  }
+}
+function showDone(a){document.getElementById('rsvp-form').style.display='none';document.getElementById('rsvp-done').classList.add('show');if(a==='no')document.getElementById('done-msg').textContent="We're sorry you can't make it, but thank you for letting us know."}
+
+/* ── NYC Map ── */
+const NYC_SPOTS = [
+  {name:"The Hotel Chelsea", lat:40.7444, lng:-73.9980, cat:"The Venue", desc:"Where it all happens. A New York landmark since 1884."},
+  {name:"Joe's Pizza", lat:40.7327, lng:-73.9965, cat:"Food & Drink", desc:"Our go-to late-night slice. Classic New York pizza at its finest."},
+  {name:"The High Line", lat:40.7480, lng:-74.0048, cat:"Walk", desc:"An elevated park built on a historic freight rail line with great views of the city."},
+  {name:"Washington Square Park", lat:40.7308, lng:-73.9973, cat:"Park", desc:"One of our favorite spots to spend a lazy afternoon."},
+  {name:"Via Carota", lat:40.7337, lng:-74.0028, cat:"Food & Drink", desc:"Incredible Italian in the West Village. Try the carciofi."},
+  {name:"The Strand Bookstore", lat:40.7333, lng:-73.9910, cat:"Shop", desc:"18 miles of books. We could spend hours here."},
+  {name:"Central Park", lat:40.7829, lng:-73.9654, cat:"Park", desc:"Take a long walk, rent a rowboat, or just sit and people-watch."},
+  {name:"Chelsea Market", lat:40.7424, lng:-74.0061, cat:"Food & Drink", desc:"A food hall in a former Nabisco factory. Great for a wander and a bite."},
+];
+let nycMap;
+function initMap(){
+  if(nycMap)return;
+  nycMap=L.map('nyc-map',{scrollWheelZoom:false}).setView([40.7430,-73.9970],13);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+    maxZoom:19
+  }).addTo(nycMap);
+  const icon=L.divIcon({className:'',html:'<div style="width:12px;height:12px;background:var(--burgundy);border:2px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.3)"></div>',iconSize:[12,12],iconAnchor:[6,6]});
+  const listEl=document.getElementById('spot-list');
+  NYC_SPOTS.forEach(s=>{
+    L.marker([s.lat,s.lng],{icon}).addTo(nycMap).bindPopup('<strong>'+s.name+'</strong><br><em>'+s.cat+'</em>');
+    const li=document.createElement('li');
+    li.innerHTML='<div class="spot-name">'+s.name+'</div><div class="spot-desc">'+s.desc+'</div><div class="spot-cat">'+s.cat+'</div>';
+    listEl.appendChild(li);
+  });
+}
+</script>
+</body>
+</html>
