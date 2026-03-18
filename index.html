@@ -49,19 +49,15 @@ body {
 .gate-wrap { text-align: center; width: 90%; max-width: 380px; }
 .gate-mark {
   font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 700; font-size: 5rem; color: var(--pale);
-  line-height: 1; margin-bottom: 3.5rem;
+  font-weight: 700; font-size: 2.8rem; color: var(--pale);
+  line-height: 1; margin-bottom: .3rem;
   opacity: 0; animation: gU 1s ease .2s forwards;
-  display: flex; align-items: center; justify-content: center; gap: .3em;
 }
-.gate-j { transform: translate(-.25em, -.25em); }
-.gate-amp {
-  font-weight: 400; font-style: italic; font-size: .45em;
-  color: var(--steel); align-self: center;
-}
-.gate-k { transform: translate(.25em, .25em); }
 .gate-sub {
-  display: none;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 400; font-size: .85rem; color: var(--steel);
+  letter-spacing: .08em; margin-bottom: 3.5rem;
+  opacity: 0; animation: gU 1s ease .4s forwards;
 }
 .gate-label {
   font-family: 'DM Sans', sans-serif;
@@ -412,9 +408,9 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 
 <div id="gate">
   <div class="gate-wrap">
-    <div class="gate-mark"><span class="gate-j">J</span><span class="gate-amp">&amp;</span><span class="gate-k">K</span></div>
+    <div class="gate-mark">J&K</div>
     <div class="gate-sub">Jack &amp; Katie</div>
-    <div class="gate-label">Please enter the password from your invitation</div>
+    <div class="gate-label">Enter the password from your invitation</div>
     <input class="gate-input" type="password" id="gate-pw" placeholder="Password" autocomplete="off">
     <button class="gate-btn" onclick="unlock()">Enter</button>
     <div class="gate-err" id="gate-err"></div>
@@ -437,7 +433,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
       <li><a onclick="navGo('event')">The Day</a></li>
       <li><a onclick="navGo('travel')">Travel &amp; Stay</a></li>
       <li><a onclick="navGo('registry')">Registry</a></li>
-      <li><a onclick="navGo('nyc')">Our NYC</a></li>
+      <li><a onclick="navGo('nyc')">Explore</a></li>
       <li><a onclick="navGo('rsvp')">RSVP</a></li>
     </ul>
   </div>
@@ -526,7 +522,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   </div>
 
   <div class="page" id="pg-nyc">
-    <div class="ih"><div class="ih-label">Explore</div><h2>Our NYC</h2></div>
+    <div class="ih"><div class="ih-label">Our Favorites</div><h2>Explore</h2></div>
     <div class="ib" style="max-width:720px"><div class="rv">
       <div class="map-intro">A few of our favorite places in the city&mdash;<br>for those who&rsquo;d like to explore while you&rsquo;re here.</div>
       <div id="nyc-map"></div>
@@ -637,19 +633,25 @@ function showDone(a){document.getElementById('rsvp-form').style.display='none';d
 
 /* ── NYC Map ── */
 const NYC_SPOTS = [
-  {name:"The Hotel Chelsea", lat:40.7444, lng:-73.9980, cat:"The Venue", desc:"Where it all happens. A New York landmark since 1884."},
-  {name:"Joe's Pizza", lat:40.7327, lng:-73.9965, cat:"Food & Drink", desc:"Our go-to late-night slice. Classic New York pizza at its finest."},
-  {name:"The High Line", lat:40.7480, lng:-74.0048, cat:"Walk", desc:"An elevated park built on a historic freight rail line with great views of the city."},
-  {name:"Washington Square Park", lat:40.7308, lng:-73.9973, cat:"Park", desc:"One of our favorite spots to spend a lazy afternoon."},
-  {name:"Via Carota", lat:40.7337, lng:-74.0028, cat:"Food & Drink", desc:"Incredible Italian in the West Village. Try the carciofi."},
-  {name:"The Strand Bookstore", lat:40.7333, lng:-73.9910, cat:"Shop", desc:"18 miles of books. We could spend hours here."},
-  {name:"Central Park", lat:40.7829, lng:-73.9654, cat:"Park", desc:"Take a long walk, rent a rowboat, or just sit and people-watch."},
-  {name:"Chelsea Market", lat:40.7424, lng:-74.0061, cat:"Food & Drink", desc:"A food hall in a former Nabisco factory. Great for a wander and a bite."},
+  {name:"Attaboy", lat:40.7189, lng:-73.9913, cat:"Bar", desc:"A speakeasy-style cocktail bar on the Lower East Side. No menu—just tell the bartender what you like."},
+  {name:"Adda", lat:40.7268, lng:-73.9861, cat:"Restaurant", desc:"Outstanding Indian food in the East Village. The lamb chops are a must."},
+  {name:"My Pie Pizzeria Romana", lat:40.7607, lng:-73.9695, cat:"Pizza", desc:"Roman-style pizza al taglio. Light, crispy, and perfect for a quick bite."},
+  {name:"Proletariat", lat:40.7283, lng:-73.9891, cat:"Bar", desc:"A tiny East Village bar with an incredible rotating craft beer selection."},
+  {name:"Spicy Moon", lat:40.7299, lng:-74.0007, cat:"Restaurant", desc:"Vegan Sichuan in the West Village. So good you won't miss the meat."},
+  {name:"NR", lat:40.7699, lng:-73.9534, cat:"Bar", desc:"A cozy neighborhood bar on the Upper East Side with great cocktails."},
+  {name:"La Cabra", lat:40.7294, lng:-73.9868, cat:"Coffee", desc:"Excellent specialty coffee from a Copenhagen-born roaster."},
+  {name:"NY Pizza Suprema", lat:40.7502, lng:-73.9953, cat:"Pizza", desc:"Right across from Penn Station. One of the best classic slices in the city."},
+  {name:"Don Antonio Pizza", lat:40.7623, lng:-73.9878, cat:"Pizza", desc:"Neapolitan pizza near Times Square. The montanara (fried dough) is legendary."},
+  {name:"Black Fox Coffee", lat:40.7065, lng:-74.0077, cat:"Coffee", desc:"Top-tier coffee in the Financial District. Beautiful space, excellent brews."},
+  {name:"The Met", lat:40.7794, lng:-73.9634, cat:"Museum", desc:"The Metropolitan Museum of Art. You could spend days here and never see it all."},
+  {name:"Broadway Tickets Line", lat:40.7590, lng:-73.9845, cat:"Entertainment", desc:"The TKTS booth in Times Square. Same-day Broadway tickets at a discount."},
+  {name:"The Public Theater", lat:40.7242, lng:-73.9884, cat:"Entertainment", desc:"World-class theater in the East Village. Home of Shakespeare in the Park."},
+  {name:"Prince Street Pizza", lat:40.7230, lng:-73.9946, cat:"Pizza", desc:"The spicy spring square slice is iconic. Worth the wait in line."},
 ];
 let nycMap;
 function initMap(){
   if(nycMap)return;
-  nycMap=L.map('nyc-map',{scrollWheelZoom:false}).setView([40.7430,-73.9970],13);
+  nycMap=L.map('nyc-map',{scrollWheelZoom:false}).setView([40.7430,-73.9900],12);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
     attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
     maxZoom:19
