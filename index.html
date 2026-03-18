@@ -41,7 +41,7 @@ body {
 /* ── Password Gate ── */
 #gate {
   position: fixed; inset: 0; z-index: 10000;
-  background: #1a1a1a;
+  background: var(--burgundy);
   display: flex; align-items: center; justify-content: center;
   transition: opacity .8s, visibility .8s;
 }
@@ -49,44 +49,51 @@ body {
 .gate-wrap { text-align: center; width: 90%; max-width: 380px; }
 .gate-mark {
   font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 700; font-size: 5rem; color: #fff;
+  font-weight: 700; font-size: 5rem; color: var(--pale);
   line-height: 1; margin-bottom: 3.5rem;
   opacity: 0; animation: gU 1s ease .2s forwards;
+  display: flex; align-items: center; justify-content: center; gap: .3em;
 }
+.gate-j { transform: translate(-.25em, -.25em); }
+.gate-amp {
+  font-weight: 400; font-style: italic; font-size: .45em;
+  color: var(--steel); align-self: center;
+}
+.gate-k { transform: translate(.25em, .25em); }
 .gate-sub {
   display: none;
 }
 .gate-label {
   font-family: 'DM Sans', sans-serif;
   font-weight: 300; font-size: .6rem; letter-spacing: .3em;
-  text-transform: uppercase; color: #999;
+  text-transform: uppercase; color: var(--warm-gray);
   margin-bottom: 1rem;
   opacity: 0; animation: gU 1s ease .6s forwards;
 }
 .gate-input {
   width: 100%; background: 0 0; border: none;
-  border-bottom: 1px solid #555;
+  border-bottom: 1px solid var(--steel-dark);
   padding: .7rem 0;
   font-family: 'EB Garamond', Georgia, serif;
   font-weight: 400; font-size: .95rem; letter-spacing: .1em;
-  color: #fff; text-align: center; outline: 0;
+  color: var(--pale); text-align: center; outline: 0;
   transition: border-color .4s;
   opacity: 0; animation: gU 1s ease .8s forwards;
 }
-.gate-input::placeholder { color: #666; }
-.gate-input:focus { border-color: #fff; }
+.gate-input::placeholder { color: var(--steel-dark); }
+.gate-input:focus { border-color: var(--pale); }
 .gate-btn {
   margin-top: 2rem; background: transparent;
-  border: 1px solid #777;
+  border: 1px solid var(--steel);
   padding: .75rem 3.5rem;
   font-family: 'DM Sans', sans-serif;
   font-weight: 400; font-size: .6rem; letter-spacing: .35em;
-  text-transform: uppercase; color: #fff;
+  text-transform: uppercase; color: var(--pale);
   cursor: pointer; transition: background .3s, color .3s;
   opacity: 0; animation: gU 1s ease 1s forwards;
 }
-.gate-btn:hover { background: #fff; color: #1a1a1a; }
-.gate-err { margin-top: 1rem; font-size: .75rem; color: #999; min-height: 1em; }
+.gate-btn:hover { background: var(--pale); color: var(--burgundy); }
+.gate-err { margin-top: 1rem; font-size: .75rem; color: var(--warm-gray); min-height: 1em; }
 @keyframes gU {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
@@ -405,9 +412,9 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 
 <div id="gate">
   <div class="gate-wrap">
-    <div class="gate-mark">J&K</div>
+    <div class="gate-mark"><span class="gate-j">J</span><span class="gate-amp">&amp;</span><span class="gate-k">K</span></div>
     <div class="gate-sub">Jack &amp; Katie</div>
-    <div class="gate-label">Enter the password from your invitation</div>
+    <div class="gate-label">Please enter the password from your invitation</div>
     <input class="gate-input" type="password" id="gate-pw" placeholder="Password" autocomplete="off">
     <button class="gate-btn" onclick="unlock()">Enter</button>
     <div class="gate-err" id="gate-err"></div>
