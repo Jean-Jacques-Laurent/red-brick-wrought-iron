@@ -679,7 +679,6 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
           <div class="party-divider"></div>
           <h4 class="party-label">Your Plus One</h4>
           <div class="fld"><label class="fld-label" for="po-name">Guest's Full Name</label><input type="text" id="po-name" placeholder="First and Last"></div>
-          <div class="fld"><label class="fld-label" for="po-meal">Guest's Dinner Selection</label><select id="po-meal"><option value="">Choose an option</option><option value="beef">Filet Mignon</option><option value="fish">Pan-Seared Salmon</option><option value="veg">Herb-Roasted Vegetable Tower</option><option value="vegan">Vegan Garden Plate</option></select></div>
           <div class="fld"><label class="fld-label" for="po-dietary">Guest's Dietary Needs</label><textarea id="po-dietary" placeholder="Allergies or restrictions..."></textarea></div>
         </div>
         <button class="rsvp-btn" id="submit-btn" onclick="submitRSVP()">Send Response</button>
@@ -904,10 +903,6 @@ async function lookupGuest() {
   }
 }
 
-function mealSelect(id) {
-  return '<select id="' + id + '"><option value="">Choose an option</option><option value="beef">Filet Mignon</option><option value="fish">Pan-Seared Salmon</option><option value="veg">Herb-Roasted Vegetable Tower</option><option value="vegan">Vegan Garden Plate</option></select>';
-}
-
 function buildGuestCard(name, idx, isPrimary) {
   const prefix = 'g' + idx;
   let html = '<div class="guest-card" id="card-' + idx + '">';
@@ -919,7 +914,6 @@ function buildGuestCard(name, idx, isPrimary) {
   html += '<label class="rdo"><input type="radio" name="att-' + idx + '" value="no" onchange="togGuest(' + idx + ')"><span>Regretfully Declines</span></label>';
   html += '</div></div>';
   html += '<div class="cond" id="fields-' + idx + '">';
-  html += '<div class="fld"><label class="fld-label" for="meal-' + idx + '">Dinner Selection</label>' + mealSelect('meal-' + idx) + '</div>';
   html += '<div class="fld"><label class="fld-label" for="dietary-' + idx + '">Dietary Needs or Allergies</label><textarea id="dietary-' + idx + '" placeholder="Allergies, restrictions, or a kind word..."></textarea></div>';
   html += '</div>';
   html += '</div></div>';
@@ -985,13 +979,11 @@ async function submitRSVP() {
       name: info.name,
       row: info.row,
       attending: att,
-      meal: att === 'yes' ? document.getElementById('meal-' + i).value : '',
       dietary: att === 'yes' ? document.getElementById('dietary-' + i).value.trim() : ''
     };
 
     if (i === 0 && currentGuest.plusOne && att === 'yes') {
       entry.plusOneName = document.getElementById('po-name').value.trim();
-      entry.plusOneMeal = document.getElementById('po-meal').value;
       entry.plusOneDietary = document.getElementById('po-dietary').value.trim();
     }
 
@@ -1043,6 +1035,13 @@ function resetRSVP() {
   document.getElementById('lookup-btn').disabled = false;
   document.getElementById('lookup-btn').textContent = 'FIND MY INVITATION';
   document.getElementById('lookup-err').style.display = 'none';
+  document.getElementById('rsvp-guests').innerHTML = '';
+  document.getElementById('po-name').value = '';
+  document.getElementById('po-dietary').value = '';
+  document.getElementById('rsvp-plusone').style.display = 'none';
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('submit-btn').textContent = 'SEND RESPONSE';
+  document.getElementById('rsvp-err').style.display = 'none';
   currentGuest = null;
 }
 
