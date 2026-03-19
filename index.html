@@ -698,24 +698,34 @@ function showDone(a){document.getElementById('rsvp-form').style.display='none';d
 
 /* ── NYC Map ── */
 const NYC_SPOTS = [
-  {name:"Attaboy", lat:40.7189, lng:-73.9913, cat:"Bar", desc:"A speakeasy-style cocktail bar on the Lower East Side. No menu—just tell the bartender what you like."},
+  /* Restaurant */
   {name:"Adda", lat:40.7268, lng:-73.9861, cat:"Restaurant", desc:"Outstanding Indian food in the East Village. The lamb chops are a must."},
-  {name:"My Pie Pizzeria Romana", lat:40.7607, lng:-73.9695, cat:"Pizza", desc:"Roman-style pizza al taglio. Light, crispy, and perfect for a quick bite."},
-  {name:"Proletariat", lat:40.7283, lng:-73.9891, cat:"Bar", desc:"A tiny East Village bar with an incredible rotating craft beer selection."},
   {name:"Spicy Moon", lat:40.7448, lng:-74.0007, cat:"Restaurant", desc:"Vegan Sichuan in Chelsea on 8th Ave. So good you won't miss the meat."},
+  {name:"Freeman's", lat:40.7222, lng:-73.9927, cat:"Restaurant", desc:"Hidden at the end of an alley on the Lower East Side. Rustic American cooking in a cozy, lodge-like space."},
+  {name:"My Pie Pizzeria Romana", lat:40.7607, lng:-73.9695, cat:"Restaurant", desc:"Roman-style pizza al taglio. Light, crispy, and perfect for a quick bite."},
+  {name:"NY Pizza Suprema", lat:40.7502, lng:-73.9953, cat:"Restaurant", desc:"Right across from Penn Station. One of the best classic slices in the city."},
+  {name:"Don Antonio Pizza", lat:40.7623, lng:-73.9878, cat:"Restaurant", desc:"Neapolitan pizza near Times Square. The montanara (fried dough) is legendary."},
+  {name:"Prince Street Pizza", lat:40.7230, lng:-73.9946, cat:"Restaurant", desc:"The spicy spring square slice is iconic. Worth the wait in line."},
+  /* Bar */
+  {name:"Attaboy", lat:40.7189, lng:-73.9913, cat:"Bar", desc:"A speakeasy-style cocktail bar on the Lower East Side. No menu—just tell the bartender what you like."},
+  {name:"Proletariat", lat:40.7283, lng:-73.9891, cat:"Bar", desc:"A tiny East Village bar with an incredible rotating craft beer selection."},
   {name:"NR", lat:40.7699, lng:-73.9534, cat:"Bar", desc:"A cozy neighborhood bar on the Upper East Side with great cocktails."},
+  {name:"George Bang Bang", lat:40.7479, lng:-73.9867, cat:"Bar", desc:"A hidden speakeasy in K-Town. Ring the bell, find the door, and enjoy creative cocktails in a secret setting."},
+  {name:"Banzarbar", lat:40.7182, lng:-73.9885, cat:"Bar", desc:"A stylish cocktail bar on the Lower East Side with inventive drinks and a great atmosphere."},
+  /* Coffee */
   {name:"La Cabra", lat:40.7294, lng:-73.9868, cat:"Coffee", desc:"Excellent specialty coffee from a Copenhagen-born roaster."},
-  {name:"NY Pizza Suprema", lat:40.7502, lng:-73.9953, cat:"Pizza", desc:"Right across from Penn Station. One of the best classic slices in the city."},
-  {name:"Don Antonio Pizza", lat:40.7623, lng:-73.9878, cat:"Pizza", desc:"Neapolitan pizza near Times Square. The montanara (fried dough) is legendary."},
   {name:"Black Fox Coffee", lat:40.7557, lng:-73.9780, cat:"Coffee", desc:"Top-tier coffee on 45th St in Midtown. Beautiful space, excellent brews."},
-  {name:"The Met", lat:40.7794, lng:-73.9634, cat:"Museum", desc:"The Metropolitan Museum of Art. You could spend days here and never see it all."},
-  {name:"Broadway Tickets Line", lat:40.7590, lng:-73.9845, cat:"Entertainment", desc:"The TKTS booth in Times Square. Same-day Broadway tickets at a discount."},
-  {name:"The Public Theater", lat:40.7242, lng:-73.9884, cat:"Entertainment", desc:"World-class theater in the East Village. Home of Shakespeare in the Park."},
-  {name:"Prince Street Pizza", lat:40.7230, lng:-73.9946, cat:"Pizza", desc:"The spicy spring square slice is iconic. Worth the wait in line."},
   {name:"Devoción", lat:40.7385, lng:-73.9860, cat:"Coffee", desc:"Beautiful Colombian coffee roaster on E 20th St. Stunning greenhouse-like space."},
-  {name:"Chelsea Market", lat:40.7424, lng:-74.0061, cat:"Food Hall", desc:"An iconic food hall in a former Nabisco factory. Great for browsing and eating."},
+  /* Shopping */
+  {name:"Chelsea Market", lat:40.7424, lng:-74.0061, cat:"Shopping", desc:"An iconic food hall in a former Nabisco factory. Great for browsing and eating."},
+  /* Museum */
+  {name:"The Met", lat:40.7794, lng:-73.9634, cat:"Museum", desc:"The Metropolitan Museum of Art. You could spend days here and never see it all."},
   {name:"Whitney Museum", lat:40.7396, lng:-74.0089, cat:"Museum", desc:"The Whitney Museum of American Art, right on the High Line in the Meatpacking District."},
+  /* Theater */
+  {name:"Broadway Tickets Line", lat:40.7590, lng:-73.9845, cat:"Theater", desc:"The TKTS booth in Times Square. Same-day Broadway tickets at a discount."},
+  {name:"The Public Theater", lat:40.7242, lng:-73.9884, cat:"Theater", desc:"World-class theater in the East Village. Home of Shakespeare in the Park."},
 ];
+const HOTEL_CHELSEA = {name:"The Hotel Chelsea", lat:40.7444, lng:-73.9980};
 let nycMap;
 function initMap(){
   if(nycMap)return;
@@ -725,12 +735,23 @@ function initMap(){
     maxZoom:19
   }).addTo(nycMap);
   const icon=L.divIcon({className:'',html:'<div style="width:12px;height:12px;background:var(--burgundy);border:2px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.3)"></div>',iconSize:[12,12],iconAnchor:[6,6]});
+  const starIcon=L.divIcon({className:'',html:'<div style="font-size:22px;line-height:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))">&#9733;</div>',iconSize:[22,22],iconAnchor:[11,11]});
+  L.marker([HOTEL_CHELSEA.lat,HOTEL_CHELSEA.lng],{icon:starIcon}).addTo(nycMap).bindPopup('<strong>'+HOTEL_CHELSEA.name+'</strong><br><em>Our Hotel</em>');
   const listEl=document.getElementById('spot-list');
-  NYC_SPOTS.forEach(s=>{
-    L.marker([s.lat,s.lng],{icon}).addTo(nycMap).bindPopup('<strong>'+s.name+'</strong><br><em>'+s.cat+'</em>');
-    const li=document.createElement('li');
-    li.innerHTML='<div class="spot-name">'+s.name+'</div><div class="spot-desc">'+s.desc+'</div><div class="spot-cat">'+s.cat+'</div>';
-    listEl.appendChild(li);
+  const cats=["Restaurant","Bar","Coffee","Shopping","Museum","Theater"];
+  cats.forEach(cat=>{
+    const spots=NYC_SPOTS.filter(s=>s.cat===cat);
+    if(!spots.length)return;
+    const heading=document.createElement('li');
+    heading.style.cssText='font-family:var(--serif);font-size:1.1rem;font-weight:600;letter-spacing:.08em;padding:1.2rem 0 .4rem;border:none;color:var(--burgundy)';
+    heading.textContent=cat;
+    listEl.appendChild(heading);
+    spots.forEach(s=>{
+      L.marker([s.lat,s.lng],{icon}).addTo(nycMap).bindPopup('<strong>'+s.name+'</strong><br><em>'+s.cat+'</em>');
+      const li=document.createElement('li');
+      li.innerHTML='<div class="spot-name">'+s.name+'</div><div class="spot-desc">'+s.desc+'</div>';
+      listEl.appendChild(li);
+    });
   });
 }
 </script>
