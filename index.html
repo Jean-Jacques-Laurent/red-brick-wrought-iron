@@ -732,19 +732,17 @@ function togFaq(btn){btn.classList.toggle('open');btn.nextElementSibling.classLi
  *   C: Plus One       – "yes" or leave blank
  *   D: RSVP Status    – leave blank (filled in automatically when they respond)
  *   E: Attending      – leave blank
- *   F: Meal           – leave blank
- *   G: Dietary        – leave blank
- *   H: Plus One Name  – leave blank
- *   I: Plus One Meal  – leave blank
- *   J: Plus One Dietary – leave blank
- *   K: Timestamp      – leave blank
+ *   F: Dietary        – leave blank
+ *   G: Plus One Name  – leave blank
+ *   H: Plus One Dietary – leave blank
+ *   I: Timestamp      – leave blank
  *
  * Example rows:
- *   | Jack Smith      | Smith Family | yes |   |   |   |   |   |   |   |   |
- *   | Katie Smith     | Smith Family |     |   |   |   |   |   |   |   |   |
- *   | Aunt Linda      | Linda & Bob  | yes |   |   |   |   |   |   |   |   |
- *   | Uncle Bob        | Linda & Bob  |     |   |   |   |   |   |   |   |   |
- *   | College Friend  |              | yes |   |   |   |   |   |   |   |   |
+ *   | Jack Smith      | Smith Family | yes |   |   |   |   |   |   |
+ *   | Katie Smith     | Smith Family |     |   |   |   |   |   |   |
+ *   | Aunt Linda      | Linda & Bob  | yes |   |   |   |   |   |   |
+ *   | Uncle Bob        | Linda & Bob  |     |   |   |   |   |   |   |
+ *   | College Friend  |              | yes |   |   |   |   |   |   |
  *
  * Then go to https://script.google.com → New Project and paste this into Code.gs:
  *
@@ -825,12 +823,10 @@ function togFaq(btn){btn.classList.toggle('open');btn.nextElementSibling.classLi
  *       var row = g.row;
  *       sheet.getRange(row, 4).setValue('done');
  *       sheet.getRange(row, 5).setValue(g.attending);
- *       sheet.getRange(row, 6).setValue(g.meal || '');
- *       sheet.getRange(row, 7).setValue(g.dietary || '');
- *       sheet.getRange(row, 8).setValue(g.plusOneName || '');
- *       sheet.getRange(row, 9).setValue(g.plusOneMeal || '');
- *       sheet.getRange(row, 10).setValue(g.plusOneDietary || '');
- *       sheet.getRange(row, 11).setValue(ts);
+ *       sheet.getRange(row, 6).setValue(g.dietary || '');
+ *       sheet.getRange(row, 7).setValue(g.plusOneName || '');
+ *       sheet.getRange(row, 8).setValue(g.plusOneDietary || '');
+ *       sheet.getRange(row, 9).setValue(ts);
  *       var line = g.name + ': ' + g.attending;
  *       if (g.plusOneName) {
  *         line += ' (Plus one: ' + g.plusOneName + ')';
