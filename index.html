@@ -752,22 +752,23 @@ function togFaq(btn){btn.classList.toggle('open');btn.nextElementSibling.classLi
  *   const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID';
  *   const NOTIFY_EMAIL = 'your@email.com';
  *
+ *   function col(row, idx) { return (row[idx] != null ? row[idx] : '').toString().trim(); }
+ *
  *   function doGet(e) {
  *     var name = (e.parameter.name || '').trim().toLowerCase();
  *     var ss = SpreadsheetApp.openById(SHEET_ID);
  *     var sheet = ss.getSheetByName('Guest List');
  *     var data = sheet.getDataRange().getValues();
- *     var headers = data[0];
  *     var guest = null;
  *     var guestRow = -1;
  *
  *     for (var i = 1; i < data.length; i++) {
- *       if (data[i][0].toString().trim().toLowerCase() === name) {
+ *       if (col(data[i], 0).toLowerCase() === name) {
  *         guest = {
- *           name: data[i][0].toString().trim(),
- *           party: data[i][1].toString().trim(),
- *           plusOne: data[i][2].toString().trim().toLowerCase() === 'yes',
- *           rsvpStatus: data[i][3].toString().trim(),
+ *           name: col(data[i], 0),
+ *           party: col(data[i], 1),
+ *           plusOne: col(data[i], 2).toLowerCase() === 'yes',
+ *           rsvpStatus: col(data[i], 3),
  *           row: i + 1
  *         };
  *         guestRow = i;
@@ -791,11 +792,11 @@ function togFaq(btn){btn.classList.toggle('open');btn.nextElementSibling.classLi
  *     if (guest.party) {
  *       for (var j = 1; j < data.length; j++) {
  *         if (j !== guestRow &&
- *             data[j][1].toString().trim() === guest.party &&
- *             !data[j][3].toString().trim()) {
+ *             col(data[j], 1) === guest.party &&
+ *             !col(data[j], 3)) {
  *           partyMembers.push({
- *             name: data[j][0].toString().trim(),
- *             plusOne: data[j][2].toString().trim().toLowerCase() === 'yes',
+ *             name: col(data[j], 0),
+ *             plusOne: col(data[j], 2).toLowerCase() === 'yes',
  *             row: j + 1
  *           });
  *         }
@@ -897,7 +898,7 @@ async function lookupGuest() {
 
   } catch (e) {
     console.error('Lookup error:', e);
-    errEl.textContent = 'Something went wrong. Please try again.';
+    errEl.textContent = 'Something went wrong. Please try again, or reach out to us for help.';
     errEl.style.display = 'block';
     btn.disabled = false; btn.textContent = 'FIND MY INVITATION';
   }
