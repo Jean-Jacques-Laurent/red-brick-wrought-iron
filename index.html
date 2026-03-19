@@ -171,7 +171,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 
 /* ── Home ── */
 .home {
-  min-height: 100vh; background: var(--near-black);
+  min-height: 100vh; background: var(--white);
   display: flex; align-items: center; justify-content: center;
   text-align: center; position: relative; padding: 2rem;
 }
@@ -179,7 +179,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .home-wordmark {
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 700; font-size: clamp(4rem, 12vw, 10rem);
-  line-height: .9; color: var(--pale); margin-bottom: 2rem;
+  line-height: .9; color: var(--burgundy); margin-bottom: 2rem;
 }
 .home-wordmark .home-amp {
   display: block; font-weight: 400; font-style: italic;
@@ -188,16 +188,16 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .home-info {
   font-family: 'DM Sans', sans-serif;
   font-weight: 300; font-size: .65rem; letter-spacing: .35em;
-  text-transform: uppercase; color: var(--steel-dark); line-height: 2.5;
+  text-transform: uppercase; color: var(--mid); line-height: 2.5;
 }
-.home-div { width: 1px; height: 50px; background: var(--olive); margin: 2.5rem auto; opacity: .5; }
+.home-div { width: 1px; height: 50px; background: var(--pale); margin: 2.5rem auto; }
 .home-enter {
   font-family: 'DM Sans', sans-serif;
   font-weight: 300; font-size: .58rem; letter-spacing: .35em;
-  text-transform: uppercase; color: var(--steel-dark);
+  text-transform: uppercase; color: var(--steel);
   cursor: pointer; background: 0 0; border: none; transition: color .3s;
 }
-.home-enter:hover { color: var(--warm-gray); }
+.home-enter:hover { color: var(--burgundy); }
 
 /* ── Inner Page Header ── */
 .ih { padding: 9rem 2.5rem 4rem; text-align: center; }
@@ -346,6 +346,31 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .rsvp-done p { font-weight: 400; font-size: .92rem; color: var(--steel); }
 .rsvp-err { color: #a94442; font-size: .85rem; text-align: center; margin-top: 1rem; display: none; }
 
+/* ── FAQ ── */
+.faq-item { border-bottom: 1px solid var(--pale); }
+.faq-item:first-child { border-top: 1px solid var(--pale); }
+.faq-q {
+  width: 100%; background: 0 0; border: none; cursor: pointer;
+  padding: 1.4rem 0; display: flex; align-items: center; justify-content: space-between;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500; font-size: 1.05rem; color: var(--burgundy);
+  text-align: left;
+}
+.faq-q::after {
+  content: '+'; font-family: 'DM Sans', sans-serif;
+  font-weight: 300; font-size: 1.2rem; color: var(--steel);
+  transition: transform .3s; flex-shrink: 0; margin-left: 1rem;
+}
+.faq-q.open::after { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height .4s, opacity .3s, padding .3s;
+}
+.faq-a.open { max-height: 300px; opacity: 1; padding-bottom: 1.4rem; }
+.faq-a p {
+  font-weight: 400; font-size: .92rem; color: var(--mid); line-height: 1.75;
+}
+
 /* ── NYC Map ── */
 .map-intro {
   font-family: 'Playfair Display', Georgia, serif;
@@ -434,6 +459,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
       <li><a onclick="navGo('travel')">Travel &amp; Stay</a></li>
       <li><a onclick="navGo('registry')">Registry</a></li>
       <li><a onclick="navGo('nyc')">Explore</a></li>
+      <li><a onclick="navGo('faq')">FAQ</a></li>
       <li><a onclick="navGo('rsvp')">RSVP</a></li>
     </ul>
   </div>
@@ -530,6 +556,44 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
     </div></div>
   </div>
 
+  <div class="page" id="pg-faq">
+    <div class="ih"><div class="ih-label">Questions</div><h2>FAQ</h2></div>
+    <div class="ib"><div class="rv">
+      <div class="faq-item">
+        <button class="faq-q" onclick="togFaq(this)">What is the dress code?</button>
+        <div class="faq-a"><p>Black Tie Optional. We want you to feel your best! For gentlemen, a dark suit or tuxedo is wonderful. For ladies, a floor-length gown, cocktail dress, or elegant jumpsuit would be perfect.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="togFaq(this)">Can I bring a plus one?</button>
+        <div class="faq-a"><p>If your invitation includes a plus one, you will be able to add their details when you RSVP. Due to venue capacity, we are only able to accommodate guests who have been formally invited.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="togFaq(this)">When should I RSVP by?</button>
+        <div class="faq-a"><p>Please RSVP by four weeks before the wedding date. This helps us finalize catering, seating, and all the details to make the day perfect.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="togFaq(this)">Will there be parking available?</button>
+        <div class="faq-a"><p>There are several parking garages near The Hotel Chelsea on 23rd and 24th Streets. We recommend taking the subway (C/E or 1 to 23rd Street) or a rideshare if possible.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="togFaq(this)">Are children welcome?</button>
+        <div class="faq-a"><p>While we love your little ones, our wedding will be an adults-only celebration. We hope this gives you a chance to enjoy a night out!</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="togFaq(this)">What if I have dietary restrictions?</button>
+        <div class="faq-a"><p>We are happy to accommodate dietary needs! Please note any allergies or restrictions in the RSVP form and we will make sure you are taken care of.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="togFaq(this)">Is there a hotel room block?</button>
+        <div class="faq-a"><p>Yes! We have reserved a block of rooms at The Hotel Chelsea itself, as well as at The High Line Hotel nearby. Use the code JACKANDKATIE when booking. See the Travel &amp; Stay page for more details.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="togFaq(this)">What time should I arrive?</button>
+        <div class="faq-a"><p>The ceremony begins at five o&rsquo;clock. We recommend arriving 15&ndash;20 minutes early to get settled. The reception will follow immediately after.</p></div>
+      </div>
+    </div></div>
+  </div>
+
   <div class="page" id="pg-rsvp">
     <div class="ih"><div class="ih-label">Kindly Respond</div><h2>RSVP</h2></div>
     <div class="ib"><div class="rv">
@@ -561,13 +625,14 @@ async function hashStr(s){const b=await crypto.subtle.digest('SHA-256',new TextE
 async function unlock(){const h=await hashStr(document.getElementById('gate-pw').value);if(h===EXPECTED_HASH){document.getElementById('gate').classList.add('hidden');document.getElementById('site').classList.add('visible');setHM();initRv()}else{document.getElementById('gate-err').textContent='Incorrect password.';document.getElementById('gate-pw').value=''}}
 document.getElementById('gate-pw').addEventListener('keydown',e=>{if(e.key==='Enter')unlock()});
 let cp='home';
-function setHM(){const h=document.getElementById('hdr');if(cp==='home')h.classList.add('dm');else h.classList.remove('dm')}
+function setHM(){document.getElementById('hdr').classList.remove('dm')}
 function go(p){const c=document.getElementById('pg-'+cp);c.classList.remove('show');setTimeout(()=>{c.classList.remove('active');const n=document.getElementById('pg-'+p);n.classList.add('active');window.scrollTo({top:0,behavior:'instant'});cp=p;setHM();requestAnimationFrame(()=>{requestAnimationFrame(()=>{n.classList.add('show');initRv();if(p==='nyc'){initMap();setTimeout(()=>nycMap.invalidateSize(),100)}})})},300)}
 function openNav(){document.getElementById('nav-ov').classList.add('open')}
 function closeNav(){document.getElementById('nav-ov').classList.remove('open')}
 function navGo(p){closeNav();setTimeout(()=>go(p),250)}
 window.addEventListener('scroll',()=>{document.getElementById('hdr').classList.toggle('scrolled',window.scrollY>40)});
 function initRv(){document.querySelectorAll('.rv').forEach(el=>{const o=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');o.unobserve(e.target)}})},{threshold:.1});o.observe(el)})}
+function togFaq(btn){btn.classList.toggle('open');btn.nextElementSibling.classList.toggle('open')}
 function togAtt(){document.getElementById('att-fields').classList.toggle('open',document.querySelector('input[name="att"]:checked')?.value==='yes')}
 function togPO(){document.getElementById('po-fields').classList.toggle('open',document.querySelector('input[name="po"]:checked')?.value==='yes')}
 /*
