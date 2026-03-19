@@ -872,7 +872,7 @@ async function lookupGuest() {
 
   try {
     const url = APPS_SCRIPT_URL + '?name=' + encodeURIComponent(name);
-    const r = await fetch(url, {redirect: 'follow'});
+    const r = await fetch(url);
     const txt = await r.text();
     let data;
     try { data = JSON.parse(txt); } catch (_) { throw new Error('Bad response'); }
