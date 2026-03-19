@@ -831,7 +831,11 @@ function togFaq(btn){btn.classList.toggle('open');btn.nextElementSibling.classLi
  *       sheet.getRange(row, 9).setValue(g.plusOneMeal || '');
  *       sheet.getRange(row, 10).setValue(g.plusOneDietary || '');
  *       sheet.getRange(row, 11).setValue(ts);
- *       summary.push(g.name + ': ' + g.attending);
+ *       var line = g.name + ': ' + g.attending;
+ *       if (g.plusOneName) {
+ *         line += ' (Plus one: ' + g.plusOneName + ')';
+ *       }
+ *       summary.push(line);
  *     }
  *
  *     var subj = 'RSVP Update: ' + guests[0].name;
