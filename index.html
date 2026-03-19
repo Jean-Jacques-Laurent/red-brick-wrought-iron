@@ -307,6 +307,19 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 
 /* ── RSVP ── */
 .rsvp-form { max-width: 460px; margin: 0 auto; }
+.rsvp-step { max-width: 460px; margin: 0 auto; }
+.rsvp-intro {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic; font-weight: 400; font-size: 1.05rem;
+  color: var(--steel-dark); text-align: center;
+  line-height: 1.85; margin-bottom: 2.5rem;
+}
+.rsvp-greeting {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic; font-weight: 400; font-size: 1.1rem;
+  color: var(--burgundy); text-align: center;
+  line-height: 1.85; margin-bottom: 2rem;
+}
 .fld { margin-bottom: 1.8rem; }
 .fld-label {
   display: block;
@@ -340,7 +353,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 }
 .rdo span { font-family: 'Playfair Display', Georgia, serif; font-size: .92rem; color: var(--olive); }
 .cond { max-height: 0; overflow: hidden; opacity: 0; transition: max-height .5s, opacity .4s; }
-.cond.open { max-height: 600px; opacity: 1; }
+.cond.open { max-height: 800px; opacity: 1; }
 .rsvp-btn {
   display: block; width: 100%; margin-top: .5rem; padding: .9rem;
   background: var(--burgundy); border: none;
@@ -351,6 +364,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 }
 .rsvp-btn:hover { background: var(--burgundy-light); }
 .rsvp-btn:disabled { opacity: .5; cursor: not-allowed; }
+.rsvp-btn-back { margin-top: 2rem; max-width: 300px; margin-left: auto; margin-right: auto; }
 .rsvp-done { display: none; text-align: center; padding: 4rem 0; }
 .rsvp-done.show { display: block; }
 .rsvp-done h3 {
@@ -358,8 +372,43 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   font-weight: 400; font-size: 1.8rem; font-style: italic;
   color: var(--burgundy); margin-bottom: 1rem;
 }
-.rsvp-done p { font-weight: 400; font-size: .92rem; color: var(--steel); }
+.rsvp-done p { font-weight: 400; font-size: .92rem; color: var(--steel); line-height: 1.85; }
 .rsvp-err { color: #a94442; font-size: .85rem; text-align: center; margin-top: 1rem; display: none; }
+.guest-card {
+  border: 1px solid var(--pale); padding: 1.6rem; margin-bottom: 1.5rem;
+  transition: border-color .3s;
+}
+.guest-card.declined { opacity: .5; }
+.guest-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500; font-size: 1.05rem; color: var(--burgundy);
+  margin-bottom: 1.2rem;
+}
+.guest-fields { }
+.guest-fields .cond.open { max-height: 800px; }
+.party-divider {
+  width: 3rem; height: 1px; background: var(--pale);
+  margin: 2rem auto;
+}
+.party-label {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400; font-size: .55rem; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--steel);
+  margin-bottom: 1.2rem;
+}
+.chk { display: flex; align-items: center; gap: .5rem; cursor: pointer; }
+.chk input[type="checkbox"] {
+  appearance: none; -webkit-appearance: none;
+  width: 15px; height: 15px; border: 1.5px solid var(--warm-gray);
+  border-radius: 2px; cursor: pointer; position: relative;
+  transition: border-color .3s; flex-shrink: 0;
+}
+.chk input[type="checkbox"]:checked { border-color: var(--burgundy); background: var(--burgundy); }
+.chk input[type="checkbox"]:checked::after {
+  content: '\2713'; position: absolute; top: -1px; left: 1.5px;
+  font-size: 11px; color: var(--white);
+}
+.chk span { font-family: 'Playfair Display', Georgia, serif; font-size: .92rem; color: var(--olive); }
 
 /* ── FAQ ── */
 .faq-item { border-bottom: 1px solid var(--pale); }
@@ -611,22 +660,50 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   <div class="page" id="pg-rsvp">
     <div class="ih"><div class="ih-label">Kindly Respond</div><h2>RSVP</h2></div>
     <div class="ib"><div class="rv">
-      <div class="rsvp-form" id="rsvp-form">
-        <div class="fld"><label class="fld-label" for="r-name">Your Full Name</label><input type="text" id="r-name" placeholder="First and Last"></div>
-        <div class="fld"><label class="fld-label">Will You Be Joining Us?</label><div class="rdo-row"><label class="rdo"><input type="radio" name="att" value="yes" onchange="togAtt()"><span>Joyfully Accepts</span></label><label class="rdo"><input type="radio" name="att" value="no" onchange="togAtt()"><span>Regretfully Declines</span></label></div></div>
-        <div class="cond" id="att-fields">
-          <div class="fld"><label class="fld-label" for="r-meal">Dinner Selection</label><select id="r-meal"><option value="">Choose an option</option><option value="beef">Filet Mignon</option><option value="fish">Pan-Seared Salmon</option><option value="veg">Herb-Roasted Vegetable Tower</option><option value="vegan">Vegan Garden Plate</option></select></div>
-          <div class="fld"><label class="fld-label">Plus One?</label><div class="rdo-row"><label class="rdo"><input type="radio" name="po" value="yes" onchange="togPO()"><span>Yes</span></label><label class="rdo"><input type="radio" name="po" value="no" onchange="togPO()"><span>No</span></label></div></div>
-          <div class="cond" id="po-fields">
-            <div class="fld"><label class="fld-label" for="r-poname">Guest's Name</label><input type="text" id="r-poname" placeholder="First and Last"></div>
-            <div class="fld"><label class="fld-label" for="r-pomeal">Guest's Dinner Selection</label><select id="r-pomeal"><option value="">Choose an option</option><option value="beef">Filet Mignon</option><option value="fish">Pan-Seared Salmon</option><option value="veg">Herb-Roasted Vegetable Tower</option><option value="vegan">Vegan Garden Plate</option></select></div>
-          </div>
-          <div class="fld"><label class="fld-label" for="r-notes">Dietary Needs or a Note</label><textarea id="r-notes" placeholder="Allergies, restrictions, or a kind word..."></textarea></div>
+
+      <!-- Step 1: Name Lookup -->
+      <div class="rsvp-step" id="rsvp-lookup">
+        <p class="rsvp-intro">Please enter your name exactly as it appears on your invitation.</p>
+        <div class="rsvp-form">
+          <div class="fld"><label class="fld-label" for="r-name">Your Full Name</label><input type="text" id="r-name" placeholder="First and Last" autocomplete="off"></div>
+          <button class="rsvp-btn" id="lookup-btn" onclick="lookupGuest()">Find My Invitation</button>
+          <div class="rsvp-err" id="lookup-err"></div>
         </div>
-        <button class="rsvp-btn" onclick="sendRSVP()">Send Response</button>
+      </div>
+
+      <!-- Step 2: RSVP Form (built dynamically) -->
+      <div class="rsvp-step" id="rsvp-form" style="display:none">
+        <p class="rsvp-greeting" id="rsvp-greeting"></p>
+        <div id="rsvp-guests"></div>
+        <div id="rsvp-plusone" style="display:none">
+          <div class="party-divider"></div>
+          <h4 class="party-label">Your Plus One</h4>
+          <div class="fld"><label class="fld-label" for="po-name">Guest's Full Name</label><input type="text" id="po-name" placeholder="First and Last"></div>
+          <div class="fld"><label class="fld-label" for="po-meal">Guest's Dinner Selection</label><select id="po-meal"><option value="">Choose an option</option><option value="beef">Filet Mignon</option><option value="fish">Pan-Seared Salmon</option><option value="veg">Herb-Roasted Vegetable Tower</option><option value="vegan">Vegan Garden Plate</option></select></div>
+          <div class="fld"><label class="fld-label" for="po-dietary">Guest's Dietary Needs</label><textarea id="po-dietary" placeholder="Allergies or restrictions..."></textarea></div>
+        </div>
+        <button class="rsvp-btn" id="submit-btn" onclick="submitRSVP()">Send Response</button>
         <div class="rsvp-err" id="rsvp-err"></div>
       </div>
-      <div class="rsvp-done" id="rsvp-done"><h3>Thank You</h3><p id="done-msg">We cannot wait to celebrate with you.</p></div>
+
+      <!-- Step 3: Already RSVP'd -->
+      <div class="rsvp-step" id="rsvp-already" style="display:none">
+        <div class="rsvp-done show">
+          <h3>We Have Your RSVP</h3>
+          <p>It looks like we&rsquo;ve already received your response. If you need to make changes, please reach out to us directly.</p>
+          <button class="rsvp-btn rsvp-btn-back" onclick="resetRSVP()">Look Up Another Name</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Thank You -->
+      <div class="rsvp-step" id="rsvp-done" style="display:none">
+        <div class="rsvp-done show">
+          <h3>Thank You</h3>
+          <p id="done-msg">We are so excited to see you there!</p>
+          <button class="rsvp-btn rsvp-btn-back" onclick="resetRSVP()">Look Up Another Name</button>
+        </div>
+      </div>
+
     </div></div>
   </div>
 
@@ -647,68 +724,326 @@ function navGo(p){closeNav();setTimeout(()=>go(p),250)}
 window.addEventListener('scroll',()=>{document.getElementById('hdr').classList.toggle('scrolled',window.scrollY>40)});
 function initRv(){document.querySelectorAll('.rv').forEach(el=>{const o=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');o.unobserve(e.target)}})},{threshold:.1});o.observe(el)})}
 function togFaq(btn){btn.classList.toggle('open');btn.nextElementSibling.classList.toggle('open')}
-function togAtt(){document.getElementById('att-fields').classList.toggle('open',document.querySelector('input[name="att"]:checked')?.value==='yes')}
-function togPO(){document.getElementById('po-fields').classList.toggle('open',document.querySelector('input[name="po"]:checked')?.value==='yes')}
 /*
  * ── Google Apps Script Setup ──
- * 1. Go to https://script.google.com → New Project
- * 2. Paste this code into Code.gs:
+ *
+ * Your Google Sheet needs a tab called "Guest List" with these columns:
+ *   A: Name           – full name as it appears on the invitation
+ *   B: Party          – a group label (e.g. "Smith Family") so party members can RSVP together
+ *   C: Plus One       – "yes" or leave blank
+ *   D: RSVP Status    – leave blank (filled in automatically when they respond)
+ *   E: Attending      – leave blank
+ *   F: Meal           – leave blank
+ *   G: Dietary        – leave blank
+ *   H: Plus One Name  – leave blank
+ *   I: Plus One Meal  – leave blank
+ *   J: Plus One Dietary – leave blank
+ *   K: Timestamp      – leave blank
+ *
+ * Example rows:
+ *   | Jack Smith      | Smith Family | yes |   |   |   |   |   |   |   |   |
+ *   | Katie Smith     | Smith Family |     |   |   |   |   |   |   |   |   |
+ *   | Aunt Linda      | Linda & Bob  | yes |   |   |   |   |   |   |   |   |
+ *   | Uncle Bob        | Linda & Bob  |     |   |   |   |   |   |   |   |   |
+ *   | College Friend  |              | yes |   |   |   |   |   |   |   |   |
+ *
+ * Then go to https://script.google.com → New Project and paste this into Code.gs:
  *
  *   const SHEET_ID = 'YOUR_GOOGLE_SHEET_ID';
  *   const NOTIFY_EMAIL = 'your@email.com';
  *
+ *   function doGet(e) {
+ *     var name = (e.parameter.name || '').trim().toLowerCase();
+ *     var ss = SpreadsheetApp.openById(SHEET_ID);
+ *     var sheet = ss.getSheetByName('Guest List');
+ *     var data = sheet.getDataRange().getValues();
+ *     var headers = data[0];
+ *     var guest = null;
+ *     var guestRow = -1;
+ *
+ *     for (var i = 1; i < data.length; i++) {
+ *       if (data[i][0].toString().trim().toLowerCase() === name) {
+ *         guest = {
+ *           name: data[i][0].toString().trim(),
+ *           party: data[i][1].toString().trim(),
+ *           plusOne: data[i][2].toString().trim().toLowerCase() === 'yes',
+ *           rsvpStatus: data[i][3].toString().trim(),
+ *           row: i + 1
+ *         };
+ *         guestRow = i;
+ *         break;
+ *       }
+ *     }
+ *
+ *     if (!guest) {
+ *       return ContentService.createTextOutput(JSON.stringify({
+ *         found: false
+ *       })).setMimeType(ContentService.MimeType.JSON);
+ *     }
+ *
+ *     if (guest.rsvpStatus) {
+ *       return ContentService.createTextOutput(JSON.stringify({
+ *         found: true, alreadyRsvpd: true, name: guest.name
+ *       })).setMimeType(ContentService.MimeType.JSON);
+ *     }
+ *
+ *     var partyMembers = [];
+ *     if (guest.party) {
+ *       for (var j = 1; j < data.length; j++) {
+ *         if (j !== guestRow &&
+ *             data[j][1].toString().trim() === guest.party &&
+ *             !data[j][3].toString().trim()) {
+ *           partyMembers.push({
+ *             name: data[j][0].toString().trim(),
+ *             plusOne: data[j][2].toString().trim().toLowerCase() === 'yes',
+ *             row: j + 1
+ *           });
+ *         }
+ *       }
+ *     }
+ *
+ *     return ContentService.createTextOutput(JSON.stringify({
+ *       found: true,
+ *       alreadyRsvpd: false,
+ *       name: guest.name,
+ *       plusOne: guest.plusOne,
+ *       row: guest.row,
+ *       partyMembers: partyMembers
+ *     })).setMimeType(ContentService.MimeType.JSON);
+ *   }
+ *
  *   function doPost(e) {
- *     const data = JSON.parse(e.postData.contents);
- *     const ss = SpreadsheetApp.openById(SHEET_ID);
- *     let sheet = ss.getSheetByName('RSVPs');
- *     if (!sheet) {
- *       sheet = ss.insertSheet('RSVPs');
- *       sheet.appendRow(['Timestamp','Name','Attending','Meal','Plus One','Guest Name','Guest Meal','Notes']);
+ *     var payload = JSON.parse(e.postData.contents);
+ *     var ss = SpreadsheetApp.openById(SHEET_ID);
+ *     var sheet = ss.getSheetByName('Guest List');
+ *     var guests = payload.guests;
+ *     var ts = new Date().toISOString();
+ *     var summary = [];
+ *
+ *     for (var i = 0; i < guests.length; i++) {
+ *       var g = guests[i];
+ *       var row = g.row;
+ *       sheet.getRange(row, 4).setValue('done');
+ *       sheet.getRange(row, 5).setValue(g.attending);
+ *       sheet.getRange(row, 6).setValue(g.meal || '');
+ *       sheet.getRange(row, 7).setValue(g.dietary || '');
+ *       sheet.getRange(row, 8).setValue(g.plusOneName || '');
+ *       sheet.getRange(row, 9).setValue(g.plusOneMeal || '');
+ *       sheet.getRange(row, 10).setValue(g.plusOneDietary || '');
+ *       sheet.getRange(row, 11).setValue(ts);
+ *       summary.push(g.name + ': ' + g.attending);
  *     }
- *     sheet.appendRow([
- *       data.ts, data.name, data.attending, data.meal,
- *       data.plusOne, data.plusOneName, data.plusOneMeal, data.notes
- *     ]);
- *     const subj = data.attending === 'yes'
- *       ? '🎉 RSVP: ' + data.name + ' accepts!'
- *       : '📝 RSVP: ' + data.name + ' declines';
- *     let body = 'Name: ' + data.name + '\nAttending: ' + data.attending;
- *     if (data.attending === 'yes') {
- *       body += '\nMeal: ' + data.meal;
- *       if (data.plusOne === 'yes') body += '\nPlus One: ' + data.plusOneName + ' (' + data.plusOneMeal + ')';
- *       if (data.notes) body += '\nNotes: ' + data.notes;
- *     }
- *     MailApp.sendEmail(NOTIFY_EMAIL, subj, body);
+ *
+ *     var subj = 'RSVP Update: ' + guests[0].name;
+ *     MailApp.sendEmail(NOTIFY_EMAIL, subj, summary.join('\n'));
+ *
  *     return ContentService.createTextOutput(JSON.stringify({result:'ok'}))
  *       .setMimeType(ContentService.MimeType.JSON);
  *   }
  *
- * 3. Deploy → New Deployment → Web App → Execute as: Me, Access: Anyone
- * 4. Copy the URL and paste it below as APPS_SCRIPT_URL
+ * Deploy → New Deployment → Web App → Execute as: Me, Access: Anyone
+ * Copy the URL and paste it below as APPS_SCRIPT_URL
  */
 const APPS_SCRIPT_URL = '';
 
-async function sendRSVP(){
-  const n=document.getElementById('r-name').value.trim();
-  const a=document.querySelector('input[name="att"]:checked')?.value;
-  if(!n){alert('Please enter your name.');return}
-  if(!a){alert('Please let us know if you can attend.');return}
-  const d={name:n,attending:a,meal:document.getElementById('r-meal').value,plusOne:document.querySelector('input[name="po"]:checked')?.value||'no',plusOneName:document.getElementById('r-poname').value.trim(),plusOneMeal:document.getElementById('r-pomeal').value,notes:document.getElementById('r-notes').value.trim(),ts:new Date().toISOString()};
-  const btn=document.querySelector('.rsvp-btn');
-  const errEl=document.getElementById('rsvp-err');
-  btn.disabled=true;btn.textContent='SENDING...';errEl.style.display='none';
-  if(!APPS_SCRIPT_URL){console.log('RSVP (no endpoint configured):',d);showDone(a);return}
-  try{
-    const r=await fetch(APPS_SCRIPT_URL,{method:'POST',body:JSON.stringify(d)});
-    if(!r.ok)throw new Error('status '+r.status);
-    showDone(a);
-  }catch(e){
-    console.error('RSVP error:',e);
-    errEl.textContent='Something went wrong. Please try again.';errEl.style.display='block';
-    btn.disabled=false;btn.textContent='SEND RESPONSE';
+let currentGuest = null;
+
+document.getElementById('r-name').addEventListener('keydown', e => {
+  if (e.key === 'Enter') lookupGuest();
+});
+
+async function lookupGuest() {
+  const name = document.getElementById('r-name').value.trim();
+  const btn = document.getElementById('lookup-btn');
+  const errEl = document.getElementById('lookup-err');
+  errEl.style.display = 'none';
+
+  if (!name) { errEl.textContent = 'Please enter your name.'; errEl.style.display = 'block'; return; }
+
+  btn.disabled = true; btn.textContent = 'SEARCHING...';
+
+  if (!APPS_SCRIPT_URL) {
+    console.log('Lookup (no endpoint):', name);
+    errEl.textContent = 'RSVP system is being set up. Please check back soon!';
+    errEl.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'FIND MY INVITATION';
+    return;
+  }
+
+  try {
+    const url = APPS_SCRIPT_URL + '?name=' + encodeURIComponent(name);
+    const r = await fetch(url, {redirect: 'follow'});
+    const txt = await r.text();
+    let data;
+    try { data = JSON.parse(txt); } catch (_) { throw new Error('Bad response'); }
+
+    if (!data.found) {
+      errEl.textContent = "We couldn\u2019t find that name on our guest list. Please enter your name exactly as it appears on your invitation, or reach out to us for help.";
+      errEl.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'FIND MY INVITATION';
+      return;
+    }
+
+    if (data.alreadyRsvpd) {
+      document.getElementById('rsvp-lookup').style.display = 'none';
+      document.getElementById('rsvp-already').style.display = '';
+      return;
+    }
+
+    currentGuest = data;
+    buildRSVPForm(data);
+    document.getElementById('rsvp-lookup').style.display = 'none';
+    document.getElementById('rsvp-form').style.display = '';
+
+  } catch (e) {
+    console.error('Lookup error:', e);
+    errEl.textContent = 'Something went wrong. Please try again.';
+    errEl.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'FIND MY INVITATION';
   }
 }
-function showDone(a){document.getElementById('rsvp-form').style.display='none';document.getElementById('rsvp-done').classList.add('show');if(a==='no')document.getElementById('done-msg').textContent="We're sorry you can't make it, but thank you for letting us know."}
+
+function mealSelect(id) {
+  return '<select id="' + id + '"><option value="">Choose an option</option><option value="beef">Filet Mignon</option><option value="fish">Pan-Seared Salmon</option><option value="veg">Herb-Roasted Vegetable Tower</option><option value="vegan">Vegan Garden Plate</option></select>';
+}
+
+function buildGuestCard(name, idx, isPrimary) {
+  const prefix = 'g' + idx;
+  let html = '<div class="guest-card" id="card-' + idx + '">';
+  html += '<div class="guest-name">' + name + '</div>';
+  html += '<div class="guest-fields">';
+  html += '<div class="fld"><label class="fld-label">Will You Be Joining Us?</label>';
+  html += '<div class="rdo-row">';
+  html += '<label class="rdo"><input type="radio" name="att-' + idx + '" value="yes" onchange="togGuest(' + idx + ')"><span>Joyfully Accepts</span></label>';
+  html += '<label class="rdo"><input type="radio" name="att-' + idx + '" value="no" onchange="togGuest(' + idx + ')"><span>Regretfully Declines</span></label>';
+  html += '</div></div>';
+  html += '<div class="cond" id="fields-' + idx + '">';
+  html += '<div class="fld"><label class="fld-label" for="meal-' + idx + '">Dinner Selection</label>' + mealSelect('meal-' + idx) + '</div>';
+  html += '<div class="fld"><label class="fld-label" for="dietary-' + idx + '">Dietary Needs or Allergies</label><textarea id="dietary-' + idx + '" placeholder="Allergies, restrictions, or a kind word..."></textarea></div>';
+  html += '</div>';
+  html += '</div></div>';
+  return html;
+}
+
+function buildRSVPForm(data) {
+  const greeting = document.getElementById('rsvp-greeting');
+  const container = document.getElementById('rsvp-guests');
+
+  if (data.partyMembers && data.partyMembers.length > 0) {
+    greeting.textContent = 'Welcome, ' + data.name + '! Please RSVP for yourself and anyone else in your party.';
+  } else {
+    greeting.textContent = 'Welcome, ' + data.name + '! We are so glad you are here.';
+  }
+
+  let html = buildGuestCard(data.name, 0, true);
+
+  if (data.partyMembers) {
+    for (let i = 0; i < data.partyMembers.length; i++) {
+      html += '<div class="party-divider"></div>';
+      html += buildGuestCard(data.partyMembers[i].name, i + 1, false);
+    }
+  }
+
+  container.innerHTML = html;
+
+  if (data.plusOne) {
+    document.getElementById('rsvp-plusone').style.display = '';
+  }
+}
+
+function togGuest(idx) {
+  const val = document.querySelector('input[name="att-' + idx + '"]:checked')?.value;
+  const fields = document.getElementById('fields-' + idx);
+  const card = document.getElementById('card-' + idx);
+  fields.classList.toggle('open', val === 'yes');
+  card.classList.toggle('declined', val === 'no');
+
+  if (idx === 0 && currentGuest.plusOne) {
+    document.getElementById('rsvp-plusone').style.display = val === 'yes' ? '' : 'none';
+  }
+}
+
+async function submitRSVP() {
+  const btn = document.getElementById('submit-btn');
+  const errEl = document.getElementById('rsvp-err');
+  errEl.style.display = 'none';
+
+  const guests = [];
+  const totalCards = 1 + (currentGuest.partyMembers ? currentGuest.partyMembers.length : 0);
+
+  for (let i = 0; i < totalCards; i++) {
+    const att = document.querySelector('input[name="att-' + i + '"]:checked')?.value;
+    if (!att) {
+      errEl.textContent = 'Please select attending or declining for each guest.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    const info = i === 0 ? currentGuest : currentGuest.partyMembers[i - 1];
+    const entry = {
+      name: info.name,
+      row: info.row,
+      attending: att,
+      meal: att === 'yes' ? document.getElementById('meal-' + i).value : '',
+      dietary: att === 'yes' ? document.getElementById('dietary-' + i).value.trim() : ''
+    };
+
+    if (i === 0 && currentGuest.plusOne && att === 'yes') {
+      entry.plusOneName = document.getElementById('po-name').value.trim();
+      entry.plusOneMeal = document.getElementById('po-meal').value;
+      entry.plusOneDietary = document.getElementById('po-dietary').value.trim();
+    }
+
+    guests.push(entry);
+  }
+
+  btn.disabled = true; btn.textContent = 'SENDING...';
+
+  if (!APPS_SCRIPT_URL) {
+    console.log('RSVP submit (no endpoint):', guests);
+    showDone(guests);
+    return;
+  }
+
+  try {
+    const r = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ guests: guests })
+    });
+    if (!r.ok) throw new Error('status ' + r.status);
+    showDone(guests);
+  } catch (e) {
+    console.error('RSVP submit error:', e);
+    errEl.textContent = 'Something went wrong. Please try again.';
+    errEl.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'SEND RESPONSE';
+  }
+}
+
+function showDone(guests) {
+  document.getElementById('rsvp-form').style.display = 'none';
+  const doneEl = document.getElementById('rsvp-done');
+  doneEl.style.display = '';
+  const msgEl = document.getElementById('done-msg');
+  const anyAttending = guests.some(g => g.attending === 'yes');
+  if (anyAttending) {
+    msgEl.textContent = "We are so excited to celebrate with you. See you at the Chelsea!";
+  } else {
+    msgEl.textContent = "We\u2019re sorry you can\u2019t make it, but thank you for letting us know. You\u2019ll be missed!";
+  }
+}
+
+function resetRSVP() {
+  document.getElementById('rsvp-lookup').style.display = '';
+  document.getElementById('rsvp-form').style.display = 'none';
+  document.getElementById('rsvp-already').style.display = 'none';
+  document.getElementById('rsvp-done').style.display = 'none';
+  document.getElementById('r-name').value = '';
+  document.getElementById('lookup-btn').disabled = false;
+  document.getElementById('lookup-btn').textContent = 'FIND MY INVITATION';
+  document.getElementById('lookup-err').style.display = 'none';
+  currentGuest = null;
+}
 
 /* ── NYC Map ── */
 const NYC_SPOTS = [
