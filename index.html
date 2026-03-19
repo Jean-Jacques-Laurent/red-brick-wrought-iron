@@ -647,7 +647,7 @@ async function unlock(){const h=await hashStr(document.getElementById('gate-pw')
 document.getElementById('gate-pw').addEventListener('keydown',e=>{if(e.key==='Enter')unlock()});
 let cp='home';
 function setHM(){const h=document.getElementById('hdr');if(cp==='home'){h.classList.add('dm')}else{h.classList.remove('dm')}}
-function go(p){const c=document.getElementById('pg-'+cp);c.classList.remove('show');setTimeout(()=>{c.classList.remove('active');const n=document.getElementById('pg-'+p);n.classList.add('active');window.scrollTo({top:0,behavior:'instant'});cp=p;setHM();requestAnimationFrame(()=>{requestAnimationFrame(()=>{n.classList.add('show');initRv();if(p==='nyc'){initMap();setTimeout(()=>nycMap.invalidateSize(),100)}})})},300)}
+function go(p){const c=document.getElementById('pg-'+cp);c.classList.remove('show');setTimeout(()=>{c.classList.remove('active');const n=document.getElementById('pg-'+p);n.classList.add('active');window.scrollTo({top:0,behavior:'instant'});cp=p;setHM();requestAnimationFrame(()=>{requestAnimationFrame(()=>{n.classList.add('show');n.querySelectorAll('.rv').forEach(el=>el.classList.add('vis'));if(p==='nyc'){initMap();setTimeout(()=>nycMap.invalidateSize(),100)}})})},300)}
 function openNav(){document.getElementById('nav-ov').classList.add('open')}
 function closeNav(){document.getElementById('nav-ov').classList.remove('open')}
 function navGo(p){closeNav();setTimeout(()=>go(p),250)}
