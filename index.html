@@ -8,7 +8,7 @@
 <title>J &amp; K at the Chelsea</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
@@ -179,20 +179,22 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   max-width: 540px; width: 100%;
 }
 .home-names {
-  font-family: 'Pinyon Script', cursive;
+  font-family: 'Monsieur La Doulaise', cursive;
   font-weight: 700; font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   line-height: 1.4; color: var(--burgundy);
-  margin-bottom: .5rem;
+  position: relative; z-index: 2;
+  margin-bottom: -1.8rem;
 }
 .home-amp {
   display: block;
-  font-family: 'Pinyon Script', cursive;
+  font-family: 'Monsieur La Doulaise', cursive;
   font-size: .6em; color: var(--steel-dark);
   margin: .1em 0;
 }
 .home-img {
   width: 320px; max-width: 75%;
-  margin: 2rem auto 2.5rem;
+  margin: 0 auto 2.5rem;
+  position: relative; z-index: 1;
 }
 .home-img img {
   width: 100%; height: auto; display: block;
@@ -200,7 +202,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .home-info {
   font-family: 'DM Sans', sans-serif;
   font-weight: 400; font-size: .7rem; letter-spacing: .35em;
-  text-transform: uppercase; color: var(--olive); line-height: 2.8;
+  text-transform: uppercase; color: var(--olive); line-height: 2.2;
 }
 .home-date {
   font-family: 'DM Sans', sans-serif;
@@ -546,7 +548,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
       <div class="home-content">
         <h1 class="home-names">John Neal Lowrance<span class="home-amp">&amp;</span>Katherine Elizabeth Ambrozy</h1>
         <div class="home-img"><img src="historical-image-chelsea.jpg" alt="The Hotel Chelsea"></div>
-        <div class="home-info">The Hotel Chelsea &bull; New York City</div>
+        <div class="home-info">The Hotel Chelsea<br>New York City</div>
         <div class="home-date">January 15, 2027</div>
         <div class="home-div"></div>
         <button class="home-enter" onclick="go('event')">Explore the Details</button>
