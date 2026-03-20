@@ -8,7 +8,7 @@
 <title>J &amp; K at the Chelsea</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
@@ -169,39 +169,53 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 /* ── Home ── */
 .home {
   min-height: 100vh;
-  background: var(--burgundy);
+  background: var(--white);
   display: flex; align-items: center; justify-content: center;
-  text-align: center; position: relative; padding: 2rem;
+  text-align: center; position: relative;
+  padding: 6rem 2rem 3rem;
 }
-.home-content { position: relative; z-index: 1; }
-.home-wordmark {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 400; font-size: clamp(2rem, 5.5vw, 4rem);
-  line-height: .9; color: var(--white); margin-bottom: 2rem;
-  font-style: italic;
+.home-content {
+  position: relative; z-index: 1;
+  max-width: 540px; width: 100%;
 }
-.home-wordmark .home-amp {
-  display: block; font-weight: 400; font-style: italic;
-  font-size: .3em; color: var(--steel); margin: .6em 0; letter-spacing: .1em;
+.home-names {
+  font-family: 'Great Vibes', cursive;
+  font-weight: 400; font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  line-height: 1.4; color: var(--burgundy);
+  margin-bottom: .5rem;
+}
+.home-amp {
+  display: block;
+  font-family: 'Great Vibes', cursive;
+  font-size: .6em; color: var(--steel-dark);
+  margin: .1em 0;
+}
+.home-img {
+  width: 320px; max-width: 75%;
+  margin: 2rem auto 2.5rem;
+}
+.home-img img {
+  width: 100%; height: auto; display: block;
 }
 .home-info {
   font-family: 'DM Sans', sans-serif;
-  font-weight: 300; font-size: .88rem; letter-spacing: .35em;
-  text-transform: uppercase; color: var(--steel); line-height: 2.5;
+  font-weight: 400; font-size: .7rem; letter-spacing: .35em;
+  text-transform: uppercase; color: var(--olive); line-height: 2.8;
 }
 .home-date {
   font-family: 'DM Sans', sans-serif;
-  font-weight: 300; font-size: .72rem; letter-spacing: .35em;
-  text-transform: uppercase; color: var(--steel); margin-top: 1.5rem;
+  font-weight: 300; font-size: .65rem; letter-spacing: .35em;
+  text-transform: uppercase; color: var(--steel-dark); margin-top: 1rem;
 }
-.home-div { width: 1px; height: 50px; background: var(--steel-dark); margin: 2.5rem auto; }
+.home-div { width: 40px; height: 1px; background: var(--pale); margin: 2rem auto; }
 .home-enter {
   font-family: 'DM Sans', sans-serif;
-  font-weight: 300; font-size: .65rem; letter-spacing: .35em;
-  text-transform: uppercase; color: var(--steel);
-  cursor: pointer; background: 0 0; border: none; transition: color .3s;
+  font-weight: 400; font-size: .6rem; letter-spacing: .35em;
+  text-transform: uppercase; color: var(--burgundy);
+  cursor: pointer; background: 0 0; border: 1px solid var(--burgundy);
+  padding: .75rem 2.5rem; transition: background .3s, color .3s;
 }
-.home-enter:hover { color: var(--white); }
+.home-enter:hover { background: var(--burgundy); color: var(--white); }
 
 /* ── Inner Page Header ── */
 .ih { padding: 9rem 2.5rem 4rem; text-align: center; }
@@ -530,8 +544,9 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   <div class="page active show" id="pg-home">
     <section class="home">
       <div class="home-content">
-        <h1 class="home-wordmark">John Neal Lowrance<span class="home-amp">&amp;</span>Katherine Elizabeth Ambrozy</h1>
-        <div class="home-info">The Hotel Chelsea<br>New York City</div>
+        <h1 class="home-names">John Neal Lowrance<span class="home-amp">&amp;</span>Katherine Elizabeth Ambrozy</h1>
+        <div class="home-img"><img src="historical-image-chelsea.jpg" alt="The Hotel Chelsea"></div>
+        <div class="home-info">The Hotel Chelsea &bull; New York City</div>
         <div class="home-date">January 15, 2027</div>
         <div class="home-div"></div>
         <button class="home-enter" onclick="go('event')">Explore the Details</button>
@@ -715,7 +730,7 @@ async function hashStr(s){const b=await crypto.subtle.digest('SHA-256',new TextE
 async function unlock(){const h=await hashStr(document.getElementById('gate-pw').value);if(h===EXPECTED_HASH){document.getElementById('gate').classList.add('hidden');document.getElementById('site').classList.add('visible');setHM();initRv()}else{document.getElementById('gate-err').textContent='Incorrect password.';document.getElementById('gate-pw').value=''}}
 document.getElementById('gate-pw').addEventListener('keydown',e=>{if(e.key==='Enter')unlock()});
 let cp='home';
-function setHM(){const h=document.getElementById('hdr');if(cp==='home'){h.classList.add('dm')}else{h.classList.remove('dm')}}
+function setHM(){const h=document.getElementById('hdr');h.classList.remove('dm')}
 function go(p){const c=document.getElementById('pg-'+cp);c.classList.remove('show');setTimeout(()=>{c.classList.remove('active');const n=document.getElementById('pg-'+p);n.classList.add('active');window.scrollTo({top:0,behavior:'instant'});cp=p;setHM();requestAnimationFrame(()=>{requestAnimationFrame(()=>{n.classList.add('show');n.querySelectorAll('.rv').forEach(el=>el.classList.add('vis'));if(p==='nyc'){initMap();setTimeout(()=>nycMap.invalidateSize(),100)}})})},300)}
 function openNav(){document.getElementById('nav-ov').classList.add('open')}
 function closeNav(){document.getElementById('nav-ov').classList.remove('open')}
