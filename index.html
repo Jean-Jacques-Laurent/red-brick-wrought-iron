@@ -180,7 +180,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 }
 .home-names {
   font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 700; font-style: italic; font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  font-weight: 400; font-style: italic; font-size: clamp(1.5rem, 3.5vw, 2.4rem);
   line-height: 1.2; color: var(--near-black);
   position: relative; z-index: 2;
   margin-bottom: 1.5rem;
@@ -205,11 +205,11 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .home-enter {
   font-family: 'DM Sans', sans-serif;
   font-weight: 400; font-size: .6rem; letter-spacing: .35em;
-  text-transform: uppercase; color: var(--near-black);
-  cursor: pointer; background: 0 0; border: 1px solid var(--near-black);
-  padding: .75rem 2.5rem; transition: background .3s, color .3s;
+  text-transform: uppercase; color: var(--pale);
+  cursor: pointer; background: var(--burgundy); border: none;
+  padding: .75rem 2.5rem; transition: background .3s;
 }
-.home-enter:hover { background: var(--near-black); color: #fff; }
+.home-enter:hover { background: var(--burgundy-light); }
 
 /* ── Inner Page Header ── */
 .ih { padding: 9rem 2.5rem 4rem; text-align: center; }
