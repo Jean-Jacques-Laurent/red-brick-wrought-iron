@@ -49,7 +49,7 @@ body {
 .gate-wrap { text-align: center; width: 90%; max-width: 380px; }
 .gate-mark {
   font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 700; font-size: 5rem; color: var(--pale);
+  font-weight: 700; font-size: 5rem; color: #fff;
   line-height: 1; margin-bottom: 3.5rem;
   opacity: 0; animation: gU 1s ease .2s forwards;
 }
@@ -59,34 +59,34 @@ body {
 .gate-label {
   font-family: 'DM Sans', sans-serif;
   font-weight: 300; font-size: .6rem; letter-spacing: .3em;
-  text-transform: uppercase; color: var(--warm-gray);
+  text-transform: uppercase; color: #fff;
   margin-bottom: 1rem;
   opacity: 0; animation: gU 1s ease .6s forwards;
 }
 .gate-input {
   width: 100%; background: 0 0; border: none;
-  border-bottom: 1px solid var(--steel-dark);
+  border-bottom: 1px solid #fff;
   padding: .7rem 0;
   font-family: 'EB Garamond', Georgia, serif;
   font-weight: 400; font-size: .95rem; letter-spacing: .1em;
-  color: var(--pale); text-align: center; outline: 0;
+  color: #fff; text-align: center; outline: 0;
   transition: border-color .4s;
   opacity: 0; animation: gU 1s ease .8s forwards;
 }
-.gate-input::placeholder { color: var(--steel-dark); }
-.gate-input:focus { border-color: var(--pale); }
+.gate-input::placeholder { color: rgba(255,255,255,.5); }
+.gate-input:focus { border-color: #fff; }
 .gate-btn {
   margin-top: 2rem; background: transparent;
-  border: 1px solid var(--steel);
+  border: 1px solid #fff;
   padding: .75rem 3.5rem;
   font-family: 'DM Sans', sans-serif;
   font-weight: 400; font-size: .6rem; letter-spacing: .35em;
-  text-transform: uppercase; color: var(--pale);
+  text-transform: uppercase; color: #fff;
   cursor: pointer; transition: background .3s, color .3s;
   opacity: 0; animation: gU 1s ease 1s forwards;
 }
-.gate-btn:hover { background: var(--pale); color: var(--burgundy); }
-.gate-err { margin-top: 1rem; font-size: .75rem; color: var(--warm-gray); min-height: 1em; }
+.gate-btn:hover { background: #fff; color: var(--burgundy); }
+.gate-err { margin-top: 1rem; font-size: .75rem; color: #fff; min-height: 1em; }
 @keyframes gU {
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
@@ -147,19 +147,19 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   background: 0 0; border: none;
   font-family: 'DM Sans', sans-serif;
   font-weight: 300; font-size: .6rem; letter-spacing: .25em;
-  text-transform: uppercase; color: var(--warm-gray);
+  text-transform: uppercase; color: #fff;
   cursor: pointer; display: flex; align-items: center; gap: .7rem;
 }
-.nav-ov-close::after { content: "\00d7"; font-size: 1.4rem; font-weight: 300; color: var(--steel); }
+.nav-ov-close::after { content: "\00d7"; font-size: 1.4rem; font-weight: 300; color: #fff; }
 .nav-ov ul { list-style: none; text-align: center; }
 .nav-ov li { margin-bottom: 1.8rem; }
 .nav-ov a {
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 400; font-size: clamp(1.4rem, 3vw, 2rem);
-  color: var(--warm-gray); text-decoration: none;
+  color: #fff; text-decoration: none;
   cursor: pointer; transition: color .3s; letter-spacing: .02em;
 }
-.nav-ov a:hover { color: var(--pale); }
+.nav-ov a:hover { color: rgba(255,255,255,.7); }
 
 /* ── Pages ── */
 .page { display: none; min-height: 100vh; opacity: 0; transition: opacity .5s; }
@@ -180,7 +180,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 }
 .home-names {
   font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 400; font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700; font-style: italic; font-size: clamp(1.5rem, 3.5vw, 2.4rem);
   line-height: 1.2; color: var(--near-black);
   position: relative; z-index: 2;
   margin-bottom: 1.5rem;
@@ -190,22 +190,6 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   font-family: 'Playfair Display', Georgia, serif;
   font-size: .5em; color: var(--near-black);
   margin: .1em 0;
-}
-.home-img {
-  width: 320px; max-width: 75%;
-  margin: 0 auto 2.5rem;
-  position: relative; z-index: 1;
-}
-.home-img img {
-  width: 100%; height: auto; display: block;
-  filter: grayscale(1);
-  mix-blend-mode: multiply;
-}
-.home-img::after {
-  content: ''; position: absolute; inset: 0;
-  background: none;
-  mix-blend-mode: screen;
-  pointer-events: none;
 }
 .home-info {
   font-family: 'DM Sans', sans-serif;
@@ -555,7 +539,6 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
     <section class="home">
       <div class="home-content">
         <h1 class="home-names">John Neal Lowrance<span class="home-amp">&amp;</span>Katherine Elizabeth Ambrozy</h1>
-        <div class="home-img"><img src="historical-image-chelsea.jpg" alt="The Hotel Chelsea"></div>
         <div class="home-info">The Hotel Chelsea<br>New York City</div>
         <div class="home-date">January 15, 2027</div>
         <div class="home-div"></div>
