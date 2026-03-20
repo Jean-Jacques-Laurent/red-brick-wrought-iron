@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<link href="https://db.onlinewebfonts.com/c/3d973778e5a3d35fdee0a4e15774d054?family=Bodega+Script" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
@@ -49,8 +48,8 @@ body {
 #gate.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .gate-wrap { text-align: center; width: 90%; max-width: 380px; }
 .gate-mark {
-  font-family: 'Bodega Script', cursive;
-  font-weight: 400; font-size: 5rem; color: var(--pale);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700; font-size: 5rem; color: var(--pale);
   line-height: 1; margin-bottom: 3.5rem;
   opacity: 0; animation: gU 1s ease .2s forwards;
 }
@@ -113,8 +112,8 @@ header.dm.scrolled {
   box-shadow: 0 1px 0 rgba(255,255,255,.04);
 }
 .hdr-brand {
-  font-family: 'Bodega Script', cursive;
-  font-weight: 400; font-size: 1.4rem; color: var(--burgundy);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700; font-size: 1.1rem; color: var(--burgundy);
   text-decoration: none; cursor: pointer; line-height: 1;
 }
 header.dm .hdr-brand { color: var(--pale); }
@@ -204,29 +203,29 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 }
 .home-img::after {
   content: ''; position: absolute; inset: 0;
-  background: var(--burgundy);
+  background: none;
   mix-blend-mode: screen;
   pointer-events: none;
 }
 .home-info {
   font-family: 'DM Sans', sans-serif;
   font-weight: 400; font-size: .7rem; letter-spacing: .35em;
-  text-transform: uppercase; color: var(--olive); line-height: 2.2;
+  text-transform: uppercase; color: var(--near-black); line-height: 2.2;
 }
 .home-date {
   font-family: 'DM Sans', sans-serif;
   font-weight: 300; font-size: .65rem; letter-spacing: .35em;
-  text-transform: uppercase; color: var(--steel-dark); margin-top: 1rem;
+  text-transform: uppercase; color: var(--mid); margin-top: 1rem;
 }
-.home-div { width: 40px; height: 1px; background: var(--pale); margin: 2rem auto; }
+.home-div { width: 40px; height: 1px; background: var(--near-black); margin: 2rem auto; }
 .home-enter {
   font-family: 'DM Sans', sans-serif;
   font-weight: 400; font-size: .6rem; letter-spacing: .35em;
-  text-transform: uppercase; color: var(--burgundy);
-  cursor: pointer; background: 0 0; border: 1px solid var(--burgundy);
+  text-transform: uppercase; color: var(--near-black);
+  cursor: pointer; background: 0 0; border: 1px solid var(--near-black);
   padding: .75rem 2.5rem; transition: background .3s, color .3s;
 }
-.home-enter:hover { background: var(--burgundy); color: var(--white); }
+.home-enter:hover { background: var(--near-black); color: #fff; }
 
 /* ── Inner Page Header ── */
 .ih { padding: 9rem 2.5rem 4rem; text-align: center; }
@@ -498,8 +497,8 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   text-transform: uppercase; color: var(--warm-gray);
 }
 .ft-r {
-  font-family: 'Bodega Script', cursive;
-  font-weight: 400; font-size: 1rem; color: var(--burgundy);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700; font-size: .7rem; color: var(--burgundy);
 }
 
 /* ── Reveal Animation ── */
