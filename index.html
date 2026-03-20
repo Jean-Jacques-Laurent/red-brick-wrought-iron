@@ -1066,6 +1066,9 @@ const NYC_SPOTS = [
   {name:"Devoción", lat:40.7580, lng:-73.9695, cat:"Coffee", desc:"Columbian coffee in a beautiful, plant-filled space."},
   /* Shopping */
   {name:"Chelsea Market", lat:40.7424, lng:-74.0061, cat:"Shopping", desc:"Old converted factory. Great for wandering and eating."},
+  {name:"McNally Jackson Books", lat:40.7234, lng:-73.9957, cat:"Shopping", desc:"Independent bookstore in SoHo with an incredible selection."},
+  {name:"Housing Works Bookstore", lat:40.7241, lng:-73.9968, cat:"Shopping", desc:"A beautiful bookstore and café that supports a great cause."},
+  {name:"The Strand", lat:40.7334, lng:-73.9910, cat:"Shopping", desc:"18 miles of books. A New York institution."},
   /* Museums */
   {name:"The Met", lat:40.7794, lng:-73.9634, cat:"Museum", desc:"No description needed. You could spend days here and never see it all."},
   {name:"Whitney Museum", lat:40.7396, lng:-74.0089, cat:"Museum", desc:"Another great art museum-- right off the High Line."},
@@ -1073,7 +1076,6 @@ const NYC_SPOTS = [
   {name:"Broadway Tickets Line", lat:40.7590, lng:-73.9845, cat:"Theater", desc:"The TKTS booth in Times Square. Same-day Broadway tickets at a discount."},
   {name:"The Public Theater", lat:40.7242, lng:-73.9884, cat:"Theater", desc:"World-class theater in the East Village. Home of Shakespeare in the Park."},
 ];
-const HOTEL_CHELSEA = {name:"The Hotel Chelsea", lat:40.7444, lng:-73.9980};
 let nycMap;
 function initMap(){
   if(nycMap)return;
@@ -1083,8 +1085,6 @@ function initMap(){
     maxZoom:19
   }).addTo(nycMap);
   const icon=L.divIcon({className:'',html:'<div style="width:12px;height:12px;background:var(--burgundy);border:2px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.3)"></div>',iconSize:[12,12],iconAnchor:[6,6]});
-  const starIcon=L.divIcon({className:'',html:'<div style="font-size:22px;line-height:1;color:#c0392b;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))">&#9733;</div>',iconSize:[22,22],iconAnchor:[11,11]});
-  L.marker([HOTEL_CHELSEA.lat,HOTEL_CHELSEA.lng],{icon:starIcon}).addTo(nycMap).bindPopup('<strong>'+HOTEL_CHELSEA.name+'</strong><br><em>Our Hotel</em>');
   const listEl=document.getElementById('spot-list');
   const cats=[["Restaurant","Restaurants"],["Pizza","Pizza"],["Bar","Bars"],["Coffee","Coffee"],["Shopping","Shopping"],["Museum","Museums"],["Theater","Theater"]];
   cats.forEach(([cat,label])=>{
