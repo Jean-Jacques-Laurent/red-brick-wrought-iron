@@ -180,10 +180,10 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 }
 .home-names {
   font-family: 'Monsieur La Doulaise', cursive;
-  font-weight: 400; font-size: clamp(3rem, 7vw, 5rem);
+  font-weight: 400; font-size: clamp(2rem, 5vw, 3.2rem);
   line-height: 1.2; color: var(--near-black);
   position: relative; z-index: 2;
-  margin-bottom: -1.8rem;
+  margin-bottom: 1.5rem;
 }
 .home-amp {
   display: block;
@@ -198,6 +198,14 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 }
 .home-img img {
   width: 100%; height: auto; display: block;
+  filter: grayscale(1);
+  mix-blend-mode: multiply;
+}
+.home-img::after {
+  content: ''; position: absolute; inset: 0;
+  background: var(--burgundy);
+  mix-blend-mode: screen;
+  pointer-events: none;
 }
 .home-info {
   font-family: 'DM Sans', sans-serif;
