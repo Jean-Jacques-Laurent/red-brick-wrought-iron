@@ -182,7 +182,8 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   font-family: 'Pinyon Script', cursive;
   font-weight: 700; font-size: clamp(1.6rem, 3.5vw, 2.4rem);
   line-height: 1.4; color: var(--burgundy);
-  margin-bottom: .5rem;
+  position: relative; z-index: 2;
+  margin-bottom: -1.8rem;
 }
 .home-amp {
   display: block;
@@ -192,7 +193,8 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 }
 .home-img {
   width: 320px; max-width: 75%;
-  margin: 2rem auto 2.5rem;
+  margin: 0 auto 2.5rem;
+  position: relative; z-index: 1;
 }
 .home-img img {
   width: 100%; height: auto; display: block;
@@ -200,7 +202,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .home-info {
   font-family: 'DM Sans', sans-serif;
   font-weight: 400; font-size: .7rem; letter-spacing: .35em;
-  text-transform: uppercase; color: var(--olive); line-height: 2.8;
+  text-transform: uppercase; color: var(--olive); line-height: 2.2;
 }
 .home-date {
   font-family: 'DM Sans', sans-serif;
@@ -546,7 +548,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
       <div class="home-content">
         <h1 class="home-names">John Neal Lowrance<span class="home-amp">&amp;</span>Katherine Elizabeth Ambrozy</h1>
         <div class="home-img"><img src="historical-image-chelsea.jpg" alt="The Hotel Chelsea"></div>
-        <div class="home-info">The Hotel Chelsea &bull; New York City</div>
+        <div class="home-info">The Hotel Chelsea<br>New York City</div>
         <div class="home-date">January 15, 2027</div>
         <div class="home-div"></div>
         <button class="home-enter" onclick="go('event')">Explore the Details</button>
