@@ -1117,7 +1117,7 @@ const NYC_SPOTS = [
   {name:"Devoción", lat:40.7580, lng:-73.9695, cat:"Coffee", desc:"Colombian coffee in a beautiful, plant-filled space.", addr:"600 Lexington Ave, New York, NY 10022", url:"https://www.devocion.com/"},
   /* Shopping */
   {name:"Chelsea Market", lat:40.7424, lng:-74.0061, cat:"Shopping", desc:"Old converted factory located in the Meatpacking District. Great for wandering, shopping, and eating.", addr:"75 9th Ave, New York, NY 10011", url:"https://www.chelseamarket.com/"},
-  {name:"McNally Jackson Books", lat:40.7234, lng:-73.9957, cat:"Shopping", desc:"Beautiful independent book store with an extensive selection.", addr:"134 Prince St, New York, NY 10012", url:"https://www.mcnallyjackson.com/"},
+  {name:"McNally Jackson Books", lat:40.7234, lng:-73.9957, cat:"Shopping", desc:"Beautiful independent book store with an extensive selection.", addr:"134 Prince St, New York, NY 10012", url:"https://www.mcnallyjackson.com/", mapsUrl:"https://www.google.com/maps/place/McNally+Jackson+Books+SoHo/@40.7255384,-74.0006998,20.78z/data=!4m15!1m8!3m7!1s0x89c2598f40622ab5:0x368bf43fc13fb149!2s134+Prince+St,+New+York,+NY+10012!3b1!8m2!3d40.7234646!4d-73.9961569!16s%2Fg%2F11txh825rc!3m5!1s0x89c2598f40e7a1c1:0xd81da90a790251be!8m2!3d40.7254231!4d-74.0006905!16s%2Fg%2F11fz2zxb9_?entry=ttu"},
   {name:"The Strand", lat:40.7334, lng:-73.9910, cat:"Shopping", desc:"An iconic New York bookstore located in the East Village.", addr:"828 Broadway, New York, NY 10003", url:"https://www.strandbooks.com/"},
   /* Museums */
   {name:"The Met", lat:40.7794, lng:-73.9634, cat:"Museum", desc:"No description needed. You could spend days here and never see it all.", addr:"1000 5th Ave, New York, NY 10028", url:"https://www.metmuseum.org/"},
@@ -1148,7 +1148,7 @@ function initMap(){
     spots.forEach(s=>{
       L.marker([s.lat,s.lng],{icon}).addTo(nycMap).bindPopup('<strong>'+s.name+'</strong><br><em>'+s.cat+'</em>');
       const li=document.createElement('li');
-      var mapsUrl='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(s.addr);
+      var mapsUrl=s.mapsUrl||('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(s.addr));
       li.innerHTML='<div class="spot-name">'+s.name+'</div><div class="spot-desc">'+s.desc+'</div>'
         +'<div class="spot-links">'
         +'<a href="'+mapsUrl+'" target="_blank" rel="noopener">'+s.addr+'</a>'
