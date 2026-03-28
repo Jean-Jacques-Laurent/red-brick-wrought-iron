@@ -177,7 +177,8 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .home {
   min-height: 100vh;
   background: var(--white);
-  display: flex; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
 }
 .home-content {
   position: relative; z-index: 1;
@@ -186,10 +187,11 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   text-align: center; padding: 6rem 3rem 3rem;
 }
 .home-image {
-  width: 50%; position: relative; overflow: hidden;
+  width: 50%; display: flex; align-items: center; justify-content: center;
+  padding: 6rem 3rem 3rem;
 }
 .home-image img {
-  width: 100%; height: 100%; object-fit: cover;
+  max-width: 100%; max-height: 70vh; object-fit: contain;
   filter: grayscale(100%);
 }
 .home-names {
@@ -512,9 +514,8 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   .evt-col + .evt-col { border-left: none; border-top: 1px solid var(--pale); }
   .reg-item { flex-direction: column; gap: 1rem; text-align: center; }
   .ft { flex-direction: column; gap: .8rem; text-align: center; }
-  .home { flex-direction: column; }
   .home-content { width: 100%; padding: 6rem 2rem 3rem; }
-  .home-image { width: 100%; height: 50vh; }
+  .home-image { display: none; }
 }
 </style>
 </head>
@@ -756,7 +757,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
     </div></div>
   </div>
 
-  <div class="ft"><div class="ft-l">Private &bull; Not Indexed &bull; No Tracking</div><div class="ft-r">J&amp;K</div></div>
+  <div class="ft"><div class="ft-l"></div><div class="ft-r">J&amp;K</div></div>
 </div>
 
 <script>
