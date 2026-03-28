@@ -177,20 +177,13 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .home {
   min-height: 100vh;
   background: var(--white);
-  display: flex; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; position: relative;
+  padding: 6rem 2rem 3rem;
 }
 .home-content {
   position: relative; z-index: 1;
-  width: 50%; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 6rem 3rem 3rem;
-}
-.home-image {
-  width: 50%; position: relative; overflow: hidden;
-}
-.home-image img {
-  width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(100%);
+  max-width: 540px; width: 100%;
 }
 .home-names {
   font-family: 'BodegaScript', 'Playfair Display', Georgia, serif;
@@ -512,9 +505,6 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   .evt-col + .evt-col { border-left: none; border-top: 1px solid var(--pale); }
   .reg-item { flex-direction: column; gap: 1rem; text-align: center; }
   .ft { flex-direction: column; gap: .8rem; text-align: center; }
-  .home { flex-direction: column; }
-  .home-content { width: 100%; padding: 6rem 2rem 3rem; }
-  .home-image { width: 100%; height: 50vh; }
 }
 </style>
 </head>
@@ -557,14 +547,11 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   <div class="page active show" id="pg-home">
     <section class="home">
       <div class="home-content">
-        <h1 class="home-names">John Neal Lowrance<span class="home-amp">&amp;</span>Katherine Elizabeth Ambrozy</h1>
+        <h1 class="home-names">John Neal Lowrance<br>Katherine Elizabeth Ambrozy</h1>
         <div class="home-info">The Hotel Chelsea<br>New York City</div>
         <div class="home-date">January 15, 2027</div>
         <div class="home-div"></div>
         <button class="home-enter" onclick="go('event')">Explore the Details</button>
-      </div>
-      <div class="home-image">
-        <img src="Hotel_Sign.jpg" alt="Hotel Chelsea sign">
       </div>
     </section>
   </div>
