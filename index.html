@@ -12,6 +12,13 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
+@font-face {
+  font-family: 'BodegaScript';
+  src: url('BodegaScript-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
   --burgundy: #461324;
   --burgundy-light: #5e1f35;
@@ -48,8 +55,8 @@ body {
 #gate.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .gate-wrap { text-align: center; width: 90%; max-width: 380px; }
 .gate-mark {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 700; font-size: 5rem; color: #fff;
+  font-family: 'BodegaScript', 'Playfair Display', Georgia, serif;
+  font-weight: 400; font-size: 5rem; color: #fff;
   line-height: 1; margin-bottom: 3.5rem;
   opacity: 0; animation: gU 1s ease .2s forwards;
 }
@@ -112,8 +119,8 @@ header.dm.scrolled {
   box-shadow: 0 1px 0 rgba(255,255,255,.04);
 }
 .hdr-brand {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 700; font-size: 1.1rem; color: var(--near-black);
+  font-family: 'BodegaScript', 'Playfair Display', Georgia, serif;
+  font-weight: 400; font-size: 1.3rem; color: var(--near-black);
   text-decoration: none; cursor: pointer; line-height: 1;
 }
 header.dm .hdr-brand { color: var(--pale); }
@@ -179,8 +186,8 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   max-width: 540px; width: 100%;
 }
 .home-names {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 400; font-style: italic; font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  font-family: 'BodegaScript', 'Playfair Display', Georgia, serif;
+  font-weight: 400; font-style: normal; font-size: clamp(1.5rem, 3.5vw, 2.4rem);
   line-height: 1.2; color: var(--near-black);
   position: relative; z-index: 2;
   margin-bottom: 1.5rem;
@@ -481,8 +488,8 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   text-transform: uppercase; color: var(--warm-gray);
 }
 .ft-r {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-weight: 700; font-size: .7rem; color: var(--near-black);
+  font-family: 'BodegaScript', 'Playfair Display', Georgia, serif;
+  font-weight: 400; font-size: .85rem; color: var(--near-black);
 }
 
 /* ── Reveal Animation ── */
