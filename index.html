@@ -8,7 +8,7 @@
 <title>J &amp; K at the Chelsea</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
@@ -23,6 +23,7 @@
   --burgundy: #461324;
   --burgundy-light: #5e1f35;
   --steel: #9eadbf;
+  --steel-text: #6e7f91;
   --steel-dark: #8494a8;
   --olive: #524823;
   --olive-light: #6b5f34;
@@ -505,6 +506,21 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 /* ── Reveal Animation ── */
 .rv { opacity: 1; transform: none; }
 
+/* ── Readability & Touch Target Fixes ── */
+.fld input[type="text"], .fld select, .fld textarea { font-size: 1rem; }
+.evt-lbl, .fld-label, .htl-c, .spot-cat, .party-label { font-size: 0.7rem; color: var(--steel-text); }
+.gate-label, .hdr-menu-text { font-size: 0.7rem; }
+.home-enter, .rsvp-btn, .gate-btn, .reg-link, .nav-ov-close { font-size: 0.7rem; }
+.htl-d, .trv-t, .faq-a p { font-size: 1rem; }
+.trv-note { font-size: 0.95rem; }
+.home-date { font-size: 0.75rem; }
+.rdo input[type="radio"] { width: 20px; height: 20px; }
+.rdo input[type="radio"]:checked::after { top: 3.5px; left: 3.5px; width: 11px; height: 11px; }
+.rdo { padding: 6px 0; min-height: 44px; }
+.chk input[type="checkbox"] { width: 20px; height: 20px; }
+.chk input[type="checkbox"]:checked::after { top: 0px; left: 2.5px; font-size: 13px; }
+.chk { padding: 6px 0; min-height: 44px; }
+
 /* ── Mobile ── */
 @media (max-width: 640px) {
   header { padding: 1rem 1.5rem; }
@@ -516,10 +532,20 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   .ft { flex-direction: column; gap: .8rem; text-align: center; }
   .home-content { width: 100%; padding: 6rem 2rem 3rem; }
   .home-image { display: none; }
+  .hdr-menu { padding: 8px; min-height: 44px; min-width: 44px; }
+  .hdr-menu-icon { width: 26px; gap: 6px; }
+  .hdr-menu-icon span { height: 2px; }
+  .evt-col { padding: 0.8rem 1.5rem; }
 }
 </style>
 </head>
 <body>
+
+<noscript>
+  <p style="text-align:center;padding:4rem 2rem;font-family:Georgia;font-size:1.1rem">
+    Please enable JavaScript to view this wedding website.
+  </p>
+</noscript>
 
 <div id="gate">
   <div class="gate-wrap">
@@ -565,7 +591,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
         <button class="home-enter" onclick="go('event')">Explore the Details</button>
       </div>
       <div class="home-image">
-        <img src="Hotel_Sign.jpg" alt="Hotel Chelsea sign">
+        <img src="Hotel_Sign.jpg" alt="Hotel Chelsea sign" width="4388" height="5298">
       </div>
     </section>
   </div>
