@@ -508,6 +508,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 
 /* ── Readability & Touch Target Fixes ── */
 .fld input[type="text"], .fld select, .fld textarea { font-size: 1rem; }
+.gate-input { font-size: 1rem; }
 .evt-lbl, .fld-label, .htl-c, .spot-cat, .party-label { font-size: 0.7rem; color: var(--steel-text); }
 .gate-label, .hdr-menu-text { font-size: 0.7rem; }
 .home-enter, .rsvp-btn, .gate-btn, .reg-link, .nav-ov-close { font-size: 0.7rem; }
@@ -521,6 +522,9 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .chk input[type="checkbox"]:checked::after { top: 0px; left: 2.5px; font-size: 13px; }
 .chk { padding: 6px 0; min-height: 44px; }
 
+/* ── Mobile RSVP FAB ── */
+.mobile-rsvp-fab { display: none; }
+
 /* ── Mobile ── */
 @media (max-width: 640px) {
   header { padding: 1rem 1.5rem; }
@@ -530,12 +534,34 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   .evt-col + .evt-col { border-left: none; border-top: 1px solid var(--pale); }
   .reg-item { flex-direction: column; gap: 1rem; text-align: center; }
   .ft { flex-direction: column; gap: .8rem; text-align: center; }
-  .home-content { width: 100%; padding: 6rem 2rem 3rem; }
+  .home-content { width: 100%; padding: 6rem 2rem 3rem; background: #f0ece6; }
   .home-image { display: none; }
   .hdr-menu { padding: 8px; min-height: 44px; min-width: 44px; }
   .hdr-menu-icon { width: 26px; gap: 6px; }
   .hdr-menu-icon span { height: 2px; }
   .evt-col { padding: 0.8rem 1.5rem; }
+  .mobile-rsvp-fab {
+    display: flex;
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 400;
+    background: var(--burgundy);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.75rem 1.2rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    transition: background 0.3s;
+  }
+  .mobile-rsvp-fab:hover { background: var(--burgundy-light); }
 }
 </style>
 </head>
@@ -566,21 +592,25 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
       <span class="hdr-menu-text">Menu</span>
     </button>
   </header>
+  <button class="mobile-rsvp-fab" onclick="go('rsvp')">RSVP</button>
 
   <div class="nav-ov" id="nav-ov">
     <button class="nav-ov-close" onclick="closeNav()">Close</button>
+    <nav aria-label="Main navigation">
     <ul>
-      <li><a onclick="navGo('home')">Home</a></li>
-      <li><a onclick="navGo('event')">Schedule</a></li>
-      <li><a onclick="navGo('accommodations')">Accommodations</a></li>
-      <li><a onclick="navGo('travel')">Travel</a></li>
-      <li><a onclick="navGo('faq')">FAQ</a></li>
-      <li><a onclick="navGo('rsvp')">RSVP</a></li>
-      <li><a onclick="navGo('registry')">Registry</a></li>
-      <li><a onclick="navGo('nyc')">Explore</a></li>
+      <li><a href="#" role="button" onclick="navGo('home'); return false;">Home</a></li>
+      <li><a href="#" role="button" onclick="navGo('event'); return false;">Schedule</a></li>
+      <li><a href="#" role="button" onclick="navGo('accommodations'); return false;">Accommodations</a></li>
+      <li><a href="#" role="button" onclick="navGo('travel'); return false;">Travel</a></li>
+      <li><a href="#" role="button" onclick="navGo('faq'); return false;">FAQ</a></li>
+      <li><a href="#" role="button" onclick="navGo('rsvp'); return false;">RSVP</a></li>
+      <li><a href="#" role="button" onclick="navGo('registry'); return false;">Registry</a></li>
+      <li><a href="#" role="button" onclick="navGo('nyc'); return false;">Explore</a></li>
     </ul>
+    </nav>
   </div>
 
+  <main>
   <div class="page active show" id="pg-home">
     <section class="home">
       <div class="home-content">
@@ -591,7 +621,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
         <button class="home-enter" onclick="go('event')">Explore the Details</button>
       </div>
       <div class="home-image">
-        <img src="Hotel_Sign.jpg" alt="Hotel Chelsea sign" width="4388" height="5298">
+        <img src="Hotel_Sign.jpg" alt="Hotel Chelsea sign" width="4388" height="5298" loading="eager" fetchpriority="high">
       </div>
     </section>
   </div>
@@ -700,35 +730,35 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
     <div class="ih"><h2>FAQ</h2></div>
     <div class="ib"><div class="rv">
       <div class="faq-item">
-        <button class="faq-q" onclick="togFaq(this)">What is the dress code?</button>
+        <button class="faq-q" aria-expanded="false" onclick="togFaq(this)">What is the dress code?</button>
         <div class="faq-a"><p>Black Tie Optional. Please dress in evening formal attire.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="togFaq(this)">Can I bring a plus one?</button>
+        <button class="faq-q" aria-expanded="false" onclick="togFaq(this)">Can I bring a plus one?</button>
         <div class="faq-a"><p>If your invitation includes a plus one, you will be able to add their details when you RSVP. Due to venue capacity, we are only able to accommodate guests who have been formally invited.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="togFaq(this)">When should I RSVP by?</button>
+        <button class="faq-q" aria-expanded="false" onclick="togFaq(this)">When should I RSVP by?</button>
         <div class="faq-a"><p>Please RSVP by December 5th, 2026 at the very latest. This gives us time to finalize all the details to make the day perfect.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="togFaq(this)">Will there be parking available?</button>
+        <button class="faq-q" aria-expanded="false" onclick="togFaq(this)">Will there be parking available?</button>
         <div class="faq-a"><p>There is no street parking, so we recommend using a nearby garage. There are several parking garages in the immediate vicinity of The Hotel Chelsea. Additionally, parking is included with the room block at the Renaissance New York Chelsea Hotel for a discounted rate of $65 (sedan) &amp; $75 (SUV) a night.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="togFaq(this)">Are children welcome?</button>
+        <button class="faq-q" aria-expanded="false" onclick="togFaq(this)">Are children welcome?</button>
         <div class="faq-a"><p>We kindly ask that you do not bring children. Our wedding will be an adults-only celebration.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="togFaq(this)">What if I have dietary restrictions?</button>
+        <button class="faq-q" aria-expanded="false" onclick="togFaq(this)">What if I have dietary restrictions?</button>
         <div class="faq-a"><p>We are happy to accommodate dietary needs! Please note any allergies or restrictions in the RSVP form and we will make sure you are taken care of.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="togFaq(this)">Is there a hotel room block?</button>
+        <button class="faq-q" aria-expanded="false" onclick="togFaq(this)">Is there a hotel room block?</button>
         <div class="faq-a"><p>Yes! We have reserved a block of rooms at the Renaissance New York Chelsea Hotel, located at 112 W 25th St. Use the code JACKANDKATIE when booking. See the Accommodations page for more details.</p></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="togFaq(this)">What time should I arrive?</button>
+        <button class="faq-q" aria-expanded="false" onclick="togFaq(this)">What time should I arrive?</button>
         <div class="faq-a"><p>The ceremony begins at five o&rsquo;clock. We recommend arriving 15&ndash;20 minutes early to get settled. The reception will follow immediately after.</p></div>
       </div>
     </div></div>
@@ -783,7 +813,8 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
     </div></div>
   </div>
 
-  <div class="ft"><div class="ft-l"></div><div class="ft-r">J&amp;K</div></div>
+  </main>
+  <footer class="ft"><div class="ft-l"></div><div class="ft-r">J&amp;K</div></footer>
 </div>
 
 <script>
@@ -799,7 +830,7 @@ function closeNav(){document.getElementById('nav-ov').classList.remove('open')}
 function navGo(p){closeNav();setTimeout(()=>go(p),250)}
 window.addEventListener('scroll',()=>{document.getElementById('hdr').classList.toggle('scrolled',window.scrollY>40)});
 function initRv(){document.querySelectorAll('.rv').forEach(el=>{const o=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');o.unobserve(e.target)}})},{threshold:.1});o.observe(el)})}
-function togFaq(btn){btn.classList.toggle('open');btn.nextElementSibling.classList.toggle('open')}
+function togFaq(btn){btn.classList.toggle('open');btn.nextElementSibling.classList.toggle('open');btn.setAttribute('aria-expanded', btn.classList.contains('open'));}
 /*
  * ── Google Apps Script Setup ──
  *
