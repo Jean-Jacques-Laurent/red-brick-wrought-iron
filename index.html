@@ -464,10 +464,11 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   max-height: 0; overflow: hidden; opacity: 0;
   transition: max-height .4s, opacity .3s, padding .3s;
 }
-.faq-a.open { max-height: 300px; opacity: 1; padding-bottom: 1.4rem; }
+.faq-a.open { max-height: 600px; opacity: 1; padding-bottom: 1.4rem; }
 .faq-a p {
   font-weight: 400; font-size: .92rem; color: var(--mid); line-height: 1.75;
 }
+.faq-a p + p { margin-top: 0.8rem; }
 
 /* ── NYC Map ── */
 .map-intro {
@@ -716,7 +717,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
     <div class="ib"><div class="rv">
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" onclick="togFaq(this)">What is the dress code?</button>
-        <div class="faq-a"><p>Black Tie Optional. Please dress in evening formal attire.</p></div>
+        <div class="faq-a"><p>We would love to see our family and friends dressed up with us! We request evening formal attire for our wedding. For men, this means dark suits with a tie/bow tie, or a tuxedo should you feel inclined! For women, floor length gowns or formal evening pants in the color of your choice. The Hotel Chelsea is a historic venue full of charm, so please use it as inspiration and come dressed to the nines. Sparkles, sequins, feathers, satin, silks, and velvet are all encouraged!</p><p>We will have a coat check at the front desk of the Hotel Chelsea for those who wish.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" onclick="togFaq(this)">Can I bring a plus one?</button>
