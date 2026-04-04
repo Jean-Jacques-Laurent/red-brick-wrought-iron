@@ -226,6 +226,16 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   padding: .75rem 2.5rem; transition: background .3s;
 }
 .home-enter:hover { background: var(--burgundy-light); }
+.home-rsvp {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400; font-size: .6rem; letter-spacing: .35em;
+  text-transform: uppercase; color: var(--burgundy);
+  cursor: pointer; background: transparent;
+  border: 1px solid var(--burgundy);
+  padding: .75rem 2.5rem; margin-top: .8rem;
+  transition: background .3s, color .3s;
+}
+.home-rsvp:hover { background: var(--burgundy); color: #fff; }
 
 /* ── Inner Page Header ── */
 .ih { padding: 9rem 2.5rem 4rem; text-align: center; }
@@ -511,7 +521,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .gate-input { font-size: 1rem; }
 .evt-lbl, .fld-label, .htl-c, .spot-cat, .party-label { font-size: 0.7rem; color: var(--steel-text); }
 .gate-label, .hdr-menu-text { font-size: 0.7rem; }
-.home-enter, .rsvp-btn, .gate-btn, .reg-link, .nav-ov-close { font-size: 0.7rem; }
+.home-enter, .home-rsvp, .rsvp-btn, .gate-btn, .reg-link, .nav-ov-close { font-size: 0.7rem; }
 .htl-d, .trv-t, .faq-a p { font-size: 1rem; }
 .trv-note { font-size: 0.95rem; }
 .home-date { font-size: 0.75rem; }
@@ -522,9 +532,6 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .chk input[type="checkbox"]:checked::after { top: 0px; left: 2.5px; font-size: 13px; }
 .chk { padding: 6px 0; min-height: 44px; }
 
-/* ── Mobile RSVP FAB ── */
-.mobile-rsvp-fab { display: none; }
-
 /* ── Mobile ── */
 @media (max-width: 640px) {
   header { padding: 1rem 1.5rem; }
@@ -534,34 +541,12 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   .evt-col + .evt-col { border-left: none; border-top: 1px solid var(--pale); }
   .reg-item { flex-direction: column; gap: 1rem; text-align: center; }
   .ft { flex-direction: column; gap: .8rem; text-align: center; }
-  .home-content { width: 100%; padding: 6rem 2rem 3rem; background: #f0ece6; }
+  .home-content { width: 100%; padding: 6rem 2rem 3rem; }
   .home-image { display: none; }
   .hdr-menu { padding: 8px; min-height: 44px; min-width: 44px; }
   .hdr-menu-icon { width: 26px; gap: 6px; }
   .hdr-menu-icon span { height: 2px; }
   .evt-col { padding: 0.8rem 1.5rem; }
-  .mobile-rsvp-fab {
-    display: flex;
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    z-index: 400;
-    background: var(--burgundy);
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 0.75rem 1.2rem;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    align-items: center;
-    justify-content: center;
-    min-height: 44px;
-    transition: background 0.3s;
-  }
-  .mobile-rsvp-fab:hover { background: var(--burgundy-light); }
 }
 </style>
 </head>
@@ -592,7 +577,6 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
       <span class="hdr-menu-text">Menu</span>
     </button>
   </header>
-  <button class="mobile-rsvp-fab" onclick="go('rsvp')">RSVP</button>
 
   <div class="nav-ov" id="nav-ov">
     <button class="nav-ov-close" onclick="closeNav()">Close</button>
@@ -619,6 +603,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
         <div class="home-date">January 15, 2027</div>
         <div class="home-div"></div>
         <button class="home-enter" onclick="go('event')">Explore the Details</button>
+        <button class="home-rsvp" onclick="go('rsvp')">RSVP</button>
       </div>
       <div class="home-image">
         <img src="Hotel_Sign.jpg" alt="Hotel Chelsea sign" width="4388" height="5298" loading="eager" fetchpriority="high">
