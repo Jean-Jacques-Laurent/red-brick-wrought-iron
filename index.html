@@ -492,7 +492,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 }
 .spot-desc { font-weight: 400; font-size: .88rem; color: var(--mid); line-height: 1.7; }
 .spot-links { font-size: .78rem; color: var(--mid); margin-top: .3rem; }
-.spot-links a { color: var(--burgundy); text-decoration: underline; }
+.spot-links a { color: var(--steel-text); text-decoration: underline; }
 .spot-cat {
   font-family: 'DM Sans', sans-serif;
   font-weight: 400; font-size: .55rem; letter-spacing: .2em;
@@ -526,6 +526,8 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .htl-d, .trv-t, .faq-a p { font-size: 1rem; }
 .trv-note { font-size: 0.95rem; }
 .home-date { font-size: 0.75rem; }
+.htl-d a, .htl-c a, .faq-a a, .trv-note a, .evt-val a { color: var(--steel-text); }
+.spot-links a { color: var(--steel-text); }
 .rdo input[type="radio"] { width: 20px; height: 20px; }
 .rdo input[type="radio"]:checked::after { top: 3.5px; left: 3.5px; width: 11px; height: 11px; }
 .rdo { padding: 6px 0; min-height: 44px; }
@@ -643,7 +645,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
         <div class="evt-name">Attire</div>
         <div class="evt-row">
           <div class="evt-col"><div class="evt-lbl">Dress Code</div><div class="evt-val">Black Tie Optional</div></div>
-          <div class="evt-col"><div class="evt-lbl">&nbsp;</div><div class="evt-val">Please dress in<br>evening formal attire</div></div>
+          <div class="evt-col"><div class="evt-lbl">&nbsp;</div><div class="evt-val">We request that you dress in<br>evening formal attire.<br><a href="#" onclick="go('faq'); return false;" style="text-decoration:underline">Please see the dress code<br>section of the FAQ page<br>for more information.</a></div></div>
         </div>
       </div>
     </div></div>
@@ -657,15 +659,15 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
         <div class="htl">
           <div class="htl-n">The Hotel Chelsea</div>
           <div class="htl-d">Since its 1884 opening, The Chelsea has made a name for itself as an iconic Manhattan landmark. We are so excited to hold this celebration in a place that has hosted so many storied artists, writers, and musicians. We can't wait for you to join us!</div>
-          <div class="htl-c"><a href="https://www.google.com/maps/search/?api=1&query=222+West+23rd+Street+New+York+NY+10011" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">222 West 23rd Street, New York, NY 10011</a> · <a href="https://hotelchelsea.com/" target="_blank" rel="noopener" style="color:var(--burgundy);text-decoration:underline">Website</a></div>
+          <div class="htl-c"><a href="https://www.google.com/maps/search/?api=1&query=222+West+23rd+Street+New+York+NY+10011" target="_blank" rel="noopener" style="text-decoration:underline">222 West 23rd Street, New York, NY 10011</a> · <a href="https://hotelchelsea.com/" target="_blank" rel="noopener" style="text-decoration:underline">Website</a></div>
         </div>
       </div>
       <div class="trv-s">
         <div class="trv-h">Hotel</div>
         <div class="htl">
           <div class="htl-n">The Renaissance New York Chelsea Hotel</div>
-          <div class="htl-d">A room block has been reserved for wedding guests at the Renaissance New York Chelsea Hotel, which is located at <a href="https://www.google.com/maps/search/?api=1&query=112+W+25th+St+New+York+NY" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">112 W 25th St</a>.</div>
-          <div class="htl-c">Group rate available &bull; <a href="https://app.marriott.com/reslink?id=1774886455375&amp;key=GRP&amp;app=resvlink" target="_blank" rel="noopener" style="color:var(--burgundy);text-decoration:underline">Please book at this link</a></div>
+          <div class="htl-d">A room block has been reserved for wedding guests at the Renaissance New York Chelsea Hotel, which is located at <a href="https://www.google.com/maps/search/?api=1&query=112+W+25th+St+New+York+NY" target="_blank" rel="noopener" style="text-decoration:underline">112 W 25th St</a>.</div>
+          <div class="htl-c">Group rate available &bull; <a href="https://app.marriott.com/reslink?id=1774886455375&amp;key=GRP&amp;app=resvlink" target="_blank" rel="noopener" style="text-decoration:underline">Please book at this link</a></div>
         </div>
         <p class="trv-note">For those who do not wish to use the hotel block, additional hotels nearby include: The Hyatt Place New York/Chelsea Hotel and the Motto by Hilton New York City Chelsea Hotel.</p>
       </div>
@@ -741,7 +743,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" onclick="togFaq(this)">Is there a hotel room block?</button>
-        <div class="faq-a"><p>Yes! We have reserved a block of rooms at the Renaissance New York Chelsea Hotel, located at 112 W 25th St. Please <a href="https://app.marriott.com/reslink?id=1774886455375&amp;key=GRP&amp;app=resvlink" target="_blank" rel="noopener" style="color:var(--burgundy);text-decoration:underline">book at this link</a>. See the Accommodations page for more details.</p></div>
+        <div class="faq-a"><p>Yes! We have reserved a block of rooms at the Renaissance New York Chelsea Hotel, located at 112 W 25th St. Please <a href="https://app.marriott.com/reslink?id=1774886455375&amp;key=GRP&amp;app=resvlink" target="_blank" rel="noopener" style="text-decoration:underline">book at this link</a>. See the Accommodations page for more details.</p></div>
       </div>
       <div class="faq-item">
         <button class="faq-q" aria-expanded="false" onclick="togFaq(this)">What time should I arrive?</button>
