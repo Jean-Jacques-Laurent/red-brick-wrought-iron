@@ -409,6 +409,11 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
   color: var(--near-black); margin-bottom: 1rem;
 }
 .rsvp-done p { font-weight: 400; font-size: .92rem; color: var(--steel); line-height: 1.85; }
+.done-summary { margin: 2rem auto; max-width: 360px; text-align: left; font-family: 'DM Sans', sans-serif; font-size: .85rem; color: var(--mid); line-height: 1.8; }
+.done-summary .done-guest { padding: .4rem 0; border-bottom: 1px solid var(--pale); }
+.done-summary .done-guest:last-child { border-bottom: none; }
+.done-summary .done-name { font-weight: 500; color: var(--near-black); }
+.done-summary .done-status { color: var(--steel-text); }
 .rsvp-err { color: #a94442; font-size: .85rem; text-align: center; margin-top: 1rem; display: none; }
 .guest-card {
   border: 1px solid var(--pale); padding: 1.6rem; margin-bottom: 1.5rem;
@@ -760,9 +765,9 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 
       <!-- Step 1: Name Lookup -->
       <div class="rsvp-step" id="rsvp-lookup">
-        <p class="rsvp-intro">Please enter your name exactly as it appears on your invitation. We kindly ask that you RSVP no later than December 5th, 2026.</p>
+        <p class="rsvp-intro">Please enter your name exactly as it appears on your invitation. We kindly ask that you RSVP no later than <strong style="color:var(--near-black);font-style:normal">December 5th, 2026</strong>.</p>
         <div class="rsvp-form">
-          <div class="fld"><label class="fld-label" for="r-name">Your Full Name</label><input type="text" id="r-name" placeholder="First and Last" autocomplete="off"></div>
+          <div class="fld"><label class="fld-label" for="r-name">Your Full Name</label><input type="text" id="r-name" placeholder="First and Last, as on your invitation" autocomplete="off"></div>
           <button class="rsvp-btn" id="lookup-btn" onclick="lookupGuest()">Find My Invitation</button>
           <div class="rsvp-err" id="lookup-err"></div>
         </div>
@@ -781,7 +786,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
       <div class="rsvp-step" id="rsvp-already" style="display:none">
         <div class="rsvp-done show">
           <h3>We Have Your RSVP</h3>
-          <p>It looks like we&rsquo;ve already received your response. If you need to make changes, please reach out to us directly.</p>
+          <p>It looks like we&rsquo;ve already received your response. Need to update a detail? Please reach out to us and we&rsquo;ll take care of it.</p>
           <button class="rsvp-btn rsvp-btn-back" onclick="resetRSVP()">Look Up Another Name</button>
         </div>
       </div>
@@ -791,6 +796,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
         <div class="rsvp-done show">
           <h3>Thank You</h3>
           <p id="done-msg">We are so excited to see you there!</p>
+          <div id="done-summary"></div>
           <button class="rsvp-btn rsvp-btn-back" onclick="resetRSVP()">Look Up Another Name</button>
         </div>
       </div>
@@ -1160,6 +1166,14 @@ function showDone(guests) {
   } else {
     msgEl.textContent = "We\u2019re sorry you can\u2019t make it, but thank you for letting us know. You\u2019ll be missed!";
   }
+  let html = '<div class="done-summary">';
+  for (const g of guests) {
+    html += '<div class="done-guest"><span class="done-name">' + esc(g.name) + '</span> &mdash; <span class="done-status">' + (g.attending === 'yes' ? 'Attending' : 'Declined') + '</span>';
+    if (g.plusOneName) html += '<br><span class="done-name">' + esc(g.plusOneName) + '</span> &mdash; <span class="done-status">Attending (guest)</span>';
+    html += '</div>';
+  }
+  html += '</div>';
+  document.getElementById('done-summary').innerHTML = html;
 }
 
 function resetRSVP() {
@@ -1167,6 +1181,7 @@ function resetRSVP() {
   document.getElementById('rsvp-form').style.display = 'none';
   document.getElementById('rsvp-already').style.display = 'none';
   document.getElementById('rsvp-done').style.display = 'none';
+  document.getElementById('done-summary').innerHTML = '';
   document.getElementById('r-name').value = '';
   document.getElementById('lookup-btn').disabled = false;
   document.getElementById('lookup-btn').textContent = 'FIND MY INVITATION';
