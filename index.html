@@ -1010,9 +1010,11 @@ function buildGuestCard(name, idx, hasPlusOne) {
   html += '<div class="cond" id="fields-' + idx + '">';
   html += '<div class="fld"><label class="fld-label" for="dietary-' + idx + '">Dietary Needs or Allergies</label><textarea id="dietary-' + idx + '" placeholder="Allergies, restrictions, or a kind word..." maxlength="500"></textarea></div>';
   if (hasPlusOne) {
-    html += '<div class="party-label" style="margin-top:1rem">Your Plus One</div>';
+    html += '<label class="chk" style="margin-top:0.8rem"><input type="checkbox" id="po-chk-' + idx + '" onchange="togPlusOne(' + idx + ')"><span>I\'ll be bringing a guest</span></label>';
+    html += '<div class="cond" id="po-fields-' + idx + '">';
     html += '<div class="fld"><label class="fld-label" for="po-name-' + idx + '">Guest\'s Full Name</label><input type="text" id="po-name-' + idx + '" placeholder="First and Last"></div>';
     html += '<div class="fld"><label class="fld-label" for="po-dietary-' + idx + '">Guest\'s Dietary Needs</label><textarea id="po-dietary-' + idx + '" placeholder="Allergies or restrictions..." maxlength="500"></textarea></div>';
+    html += '</div>';
   }
   html += '</div>';
   html += '</div></div>';
@@ -1047,6 +1049,16 @@ function togGuest(idx) {
   const card = document.getElementById('card-' + idx);
   fields.classList.toggle('open', val === 'yes');
   card.classList.toggle('declined', val === 'no');
+  // Reset plus-one checkbox and fields when declining
+  const poChk = document.getElementById('po-chk-' + idx);
+  if (poChk && val !== 'yes') {
+    poChk.checked = false;
+    document.getElementById('po-fields-' + idx).classList.remove('open');
+  }
+}
+function togPlusOne(idx) {
+  const chk = document.getElementById('po-chk-' + idx);
+  document.getElementById('po-fields-' + idx).classList.toggle('open', chk.checked);
 }
 
 async function submitRSVP() {
@@ -1060,11 +1072,14 @@ async function submitRSVP() {
 
   for (let i = 0; i < totalCards; i++) {
     const att = document.querySelector('input[name="att-' + i + '"]:checked')?.value;
-    if (!att) {
-      errEl.textContent = 'Please select attending or declining for each guest.';
+
+    // Primary guest (idx 0) must answer; party members are optional
+    if (!att && i === 0) {
+      errEl.textContent = 'Please select whether you will be attending.';
       errEl.style.display = 'block';
       return;
     }
+    if (!att) continue; // skip party members who haven't selected
 
     const info = i === 0 ? currentGuest : currentGuest.partyMembers[i - 1];
     const entry = {
@@ -1075,17 +1090,26 @@ async function submitRSVP() {
     };
 
     if (info.plusOne && att === 'yes') {
-      const poName = document.getElementById('po-name-' + i).value.trim();
-      if (!poName) {
-        errEl.textContent = "Please enter your guest\u2019s name for " + info.name + "\u2019s plus one.";
-        errEl.style.display = 'block';
-        return;
+      const poChk = document.getElementById('po-chk-' + i);
+      if (poChk && poChk.checked) {
+        const poName = document.getElementById('po-name-' + i).value.trim();
+        if (!poName) {
+          errEl.textContent = "Please enter your guest\u2019s name for " + info.name + "\u2019s plus one.";
+          errEl.style.display = 'block';
+          return;
+        }
+        entry.plusOneName = poName;
+        entry.plusOneDietary = document.getElementById('po-dietary-' + i).value.trim();
       }
-      entry.plusOneName = poName;
-      entry.plusOneDietary = document.getElementById('po-dietary-' + i).value.trim();
     }
 
     guests.push(entry);
+  }
+
+  if (guests.length === 0) {
+    errEl.textContent = 'Please select whether you will be attending.';
+    errEl.style.display = 'block';
+    return;
   }
 
   submitting = true;
