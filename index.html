@@ -774,7 +774,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
           <div class="party-divider"></div>
           <h4 class="party-label">Your Plus One</h4>
           <div class="fld"><label class="fld-label" for="po-name">Guest's Full Name</label><input type="text" id="po-name" placeholder="First and Last"></div>
-          <div class="fld"><label class="fld-label" for="po-dietary">Guest's Dietary Needs</label><textarea id="po-dietary" placeholder="Allergies or restrictions..."></textarea></div>
+          <div class="fld"><label class="fld-label" for="po-dietary">Guest's Dietary Needs</label><textarea id="po-dietary" placeholder="Allergies or restrictions..." maxlength="500"></textarea></div>
         </div>
         <button class="rsvp-btn" id="submit-btn" onclick="submitRSVP()">Send Response</button>
         <div class="rsvp-err" id="rsvp-err"></div>
@@ -943,6 +943,8 @@ function togFaq(btn){btn.classList.toggle('open');btn.nextElementSibling.classLi
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxWHIbkcQiLujhTdIvdWYsdMRdVelYzPJrOzFJNjRfLdKy1rncaDflUyl6b-hOtj6DZ/exec';
 
 let currentGuest = null;
+let submitting = false;
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
 document.getElementById('r-name').addEventListener('keydown', e => {
   if (e.key === 'Enter') lookupGuest();
@@ -968,7 +970,10 @@ async function lookupGuest() {
 
   try {
     const url = APPS_SCRIPT_URL + '?name=' + encodeURIComponent(name);
-    const r = await fetch(url);
+    const ac = new AbortController();
+    const tm = setTimeout(() => ac.abort(), 15000);
+    const r = await fetch(url, { signal: ac.signal });
+    clearTimeout(tm);
     const txt = await r.text();
     let data;
     try { data = JSON.parse(txt); } catch (_) { throw new Error('Bad response'); }
@@ -993,7 +998,7 @@ async function lookupGuest() {
 
   } catch (e) {
     console.error('Lookup error:', e);
-    errEl.textContent = 'Something went wrong. Please try again, or reach out to us for help.';
+    errEl.textContent = e.name === 'AbortError' ? 'This is taking longer than expected. Please try again.' : 'Something went wrong. Please try again, or reach out to us for help.';
     errEl.style.display = 'block';
     btn.disabled = false; btn.textContent = 'FIND MY INVITATION';
   }
@@ -1002,7 +1007,7 @@ async function lookupGuest() {
 function buildGuestCard(name, idx, isPrimary) {
   const prefix = 'g' + idx;
   let html = '<div class="guest-card" id="card-' + idx + '">';
-  html += '<div class="guest-name">' + name + '</div>';
+  html += '<div class="guest-name">' + esc(name) + '</div>';
   html += '<div class="guest-fields">';
   html += '<div class="fld"><label class="fld-label">Will You Be Joining Us?</label>';
   html += '<div class="rdo-row">';
@@ -1010,7 +1015,7 @@ function buildGuestCard(name, idx, isPrimary) {
   html += '<label class="rdo"><input type="radio" name="att-' + idx + '" value="no" onchange="togGuest(' + idx + ')"><span>Regretfully Declines</span></label>';
   html += '</div></div>';
   html += '<div class="cond" id="fields-' + idx + '">';
-  html += '<div class="fld"><label class="fld-label" for="dietary-' + idx + '">Dietary Needs or Allergies</label><textarea id="dietary-' + idx + '" placeholder="Allergies, restrictions, or a kind word..."></textarea></div>';
+  html += '<div class="fld"><label class="fld-label" for="dietary-' + idx + '">Dietary Needs or Allergies</label><textarea id="dietary-' + idx + '" placeholder="Allergies, restrictions, or a kind word..." maxlength="500"></textarea></div>';
   html += '</div>';
   html += '</div></div>';
   return html;
@@ -1055,6 +1060,7 @@ function togGuest(idx) {
 }
 
 async function submitRSVP() {
+  if (submitting) return;
   const btn = document.getElementById('submit-btn');
   const errEl = document.getElementById('rsvp-err');
   errEl.style.display = 'none';
@@ -1079,13 +1085,20 @@ async function submitRSVP() {
     };
 
     if (i === 0 && currentGuest.plusOne && att === 'yes') {
-      entry.plusOneName = document.getElementById('po-name').value.trim();
+      const poName = document.getElementById('po-name').value.trim();
+      if (!poName) {
+        errEl.textContent = "Please enter your guest\u2019s name.";
+        errEl.style.display = 'block';
+        return;
+      }
+      entry.plusOneName = poName;
       entry.plusOneDietary = document.getElementById('po-dietary').value.trim();
     }
 
     guests.push(entry);
   }
 
+  submitting = true;
   btn.disabled = true; btn.textContent = 'SENDING...';
 
   if (!APPS_SCRIPT_URL) {
@@ -1095,16 +1108,26 @@ async function submitRSVP() {
   }
 
   try {
+    const ac = new AbortController();
+    const tm = setTimeout(() => ac.abort(), 15000);
     const r = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      body: JSON.stringify({ guests: guests })
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ guests: guests }),
+      signal: ac.signal
     });
+    clearTimeout(tm);
     if (!r.ok) throw new Error('status ' + r.status);
+    const txt = await r.text();
+    let data;
+    try { data = JSON.parse(txt); } catch (_) { data = {}; }
+    if (data.result && data.result !== 'ok') throw new Error(data.message || 'Server error');
     showDone(guests);
   } catch (e) {
     console.error('RSVP submit error:', e);
-    errEl.textContent = 'Something went wrong. Please try again.';
+    errEl.textContent = e.name === 'AbortError' ? 'This is taking longer than expected. Please try again.' : 'Something went wrong. Please try again.';
     errEl.style.display = 'block';
+    submitting = false;
     btn.disabled = false; btn.textContent = 'SEND RESPONSE';
   }
 }
@@ -1139,6 +1162,7 @@ function resetRSVP() {
   document.getElementById('submit-btn').textContent = 'SEND RESPONSE';
   document.getElementById('rsvp-err').style.display = 'none';
   currentGuest = null;
+  submitting = false;
 }
 
 /* ── NYC Map ── */
