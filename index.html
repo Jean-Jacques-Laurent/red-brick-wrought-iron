@@ -770,12 +770,6 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
       <div class="rsvp-step" id="rsvp-form" style="display:none">
         <p class="rsvp-greeting" id="rsvp-greeting"></p>
         <div id="rsvp-guests"></div>
-        <div id="rsvp-plusone" style="display:none">
-          <div class="party-divider"></div>
-          <h4 class="party-label">Your Plus One</h4>
-          <div class="fld"><label class="fld-label" for="po-name">Guest's Full Name</label><input type="text" id="po-name" placeholder="First and Last"></div>
-          <div class="fld"><label class="fld-label" for="po-dietary">Guest's Dietary Needs</label><textarea id="po-dietary" placeholder="Allergies or restrictions..." maxlength="500"></textarea></div>
-        </div>
         <button class="rsvp-btn" id="submit-btn" onclick="submitRSVP()">Send Response</button>
         <div class="rsvp-err" id="rsvp-err"></div>
       </div>
@@ -1004,8 +998,7 @@ async function lookupGuest() {
   }
 }
 
-function buildGuestCard(name, idx, isPrimary) {
-  const prefix = 'g' + idx;
+function buildGuestCard(name, idx, hasPlusOne) {
   let html = '<div class="guest-card" id="card-' + idx + '">';
   html += '<div class="guest-name">' + esc(name) + '</div>';
   html += '<div class="guest-fields">';
@@ -1016,6 +1009,11 @@ function buildGuestCard(name, idx, isPrimary) {
   html += '</div></div>';
   html += '<div class="cond" id="fields-' + idx + '">';
   html += '<div class="fld"><label class="fld-label" for="dietary-' + idx + '">Dietary Needs or Allergies</label><textarea id="dietary-' + idx + '" placeholder="Allergies, restrictions, or a kind word..." maxlength="500"></textarea></div>';
+  if (hasPlusOne) {
+    html += '<div class="party-label" style="margin-top:1rem">Your Plus One</div>';
+    html += '<div class="fld"><label class="fld-label" for="po-name-' + idx + '">Guest\'s Full Name</label><input type="text" id="po-name-' + idx + '" placeholder="First and Last"></div>';
+    html += '<div class="fld"><label class="fld-label" for="po-dietary-' + idx + '">Guest\'s Dietary Needs</label><textarea id="po-dietary-' + idx + '" placeholder="Allergies or restrictions..." maxlength="500"></textarea></div>';
+  }
   html += '</div>';
   html += '</div></div>';
   return html;
@@ -1031,20 +1029,16 @@ function buildRSVPForm(data) {
     greeting.textContent = 'Welcome, ' + data.name + '! We are so glad you are here.';
   }
 
-  let html = buildGuestCard(data.name, 0, true);
+  let html = buildGuestCard(data.name, 0, data.plusOne);
 
   if (data.partyMembers) {
     for (let i = 0; i < data.partyMembers.length; i++) {
       html += '<div class="party-divider"></div>';
-      html += buildGuestCard(data.partyMembers[i].name, i + 1, false);
+      html += buildGuestCard(data.partyMembers[i].name, i + 1, data.partyMembers[i].plusOne);
     }
   }
 
   container.innerHTML = html;
-
-  if (data.plusOne) {
-    document.getElementById('rsvp-plusone').style.display = '';
-  }
 }
 
 function togGuest(idx) {
@@ -1053,10 +1047,6 @@ function togGuest(idx) {
   const card = document.getElementById('card-' + idx);
   fields.classList.toggle('open', val === 'yes');
   card.classList.toggle('declined', val === 'no');
-
-  if (idx === 0 && currentGuest.plusOne) {
-    document.getElementById('rsvp-plusone').style.display = val === 'yes' ? '' : 'none';
-  }
 }
 
 async function submitRSVP() {
@@ -1084,15 +1074,15 @@ async function submitRSVP() {
       dietary: att === 'yes' ? document.getElementById('dietary-' + i).value.trim() : ''
     };
 
-    if (i === 0 && currentGuest.plusOne && att === 'yes') {
-      const poName = document.getElementById('po-name').value.trim();
+    if (info.plusOne && att === 'yes') {
+      const poName = document.getElementById('po-name-' + i).value.trim();
       if (!poName) {
-        errEl.textContent = "Please enter your guest\u2019s name.";
+        errEl.textContent = "Please enter your guest\u2019s name for " + info.name + "\u2019s plus one.";
         errEl.style.display = 'block';
         return;
       }
       entry.plusOneName = poName;
-      entry.plusOneDietary = document.getElementById('po-dietary').value.trim();
+      entry.plusOneDietary = document.getElementById('po-dietary-' + i).value.trim();
     }
 
     guests.push(entry);
@@ -1155,9 +1145,6 @@ function resetRSVP() {
   document.getElementById('lookup-btn').textContent = 'FIND MY INVITATION';
   document.getElementById('lookup-err').style.display = 'none';
   document.getElementById('rsvp-guests').innerHTML = '';
-  document.getElementById('po-name').value = '';
-  document.getElementById('po-dietary').value = '';
-  document.getElementById('rsvp-plusone').style.display = 'none';
   document.getElementById('submit-btn').disabled = false;
   document.getElementById('submit-btn').textContent = 'SEND RESPONSE';
   document.getElementById('rsvp-err').style.display = 'none';
