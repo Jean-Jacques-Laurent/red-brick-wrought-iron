@@ -399,6 +399,8 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 .rsvp-btn:hover { background: var(--burgundy-light); }
 .rsvp-btn:disabled { opacity: .5; cursor: not-allowed; }
 .rsvp-btn-back { margin-top: 2rem; max-width: 300px; margin-left: auto; margin-right: auto; }
+.rsvp-btn-cancel { background: transparent; border: 1px solid var(--burgundy); color: var(--burgundy); margin-top: .8rem; }
+.rsvp-btn-cancel:hover { background: var(--burgundy); color: #fff; }
 .rsvp-done { display: none; text-align: center; padding: 4rem 0; }
 .rsvp-done.show { display: block; }
 .rsvp-done h3 {
@@ -771,7 +773,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
         <p class="rsvp-greeting" id="rsvp-greeting"></p>
         <div id="rsvp-guests"></div>
         <button class="rsvp-btn" id="submit-btn" onclick="submitRSVP()">Send Response</button>
-        <button class="rsvp-btn rsvp-btn-back" onclick="resetRSVP()">Cancel</button>
+        <button class="rsvp-btn rsvp-btn-cancel" onclick="resetRSVP()">Cancel</button>
         <div class="rsvp-err" id="rsvp-err"></div>
       </div>
 
