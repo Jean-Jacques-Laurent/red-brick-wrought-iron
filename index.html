@@ -1026,7 +1026,7 @@ function buildRSVPForm(data) {
   const container = document.getElementById('rsvp-guests');
 
   if (data.partyMembers && data.partyMembers.length > 0) {
-    greeting.textContent = 'Welcome, ' + data.name + '! Please RSVP for yourself and anyone else in your party.';
+    greeting.textContent = 'Welcome, ' + data.name + '! Please RSVP for yourself, or for some or all members of your party.';
   } else {
     greeting.textContent = 'Welcome, ' + data.name + '! We are so glad you are here.';
   }
