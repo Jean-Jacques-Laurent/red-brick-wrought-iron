@@ -597,7 +597,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
       <li><a href="#" role="button" onclick="navGo('accommodations'); return false;">Accommodations</a></li>
       <li><a href="#" role="button" onclick="navGo('travel'); return false;">Travel</a></li>
       <li><a href="#" role="button" onclick="navGo('faq'); return false;">FAQ</a></li>
-      <li><a href="#" role="button" onclick="navGo('rsvp'); return false;">RSVP</a></li>
+      <!-- <li><a href="#" role="button" onclick="navGo('rsvp'); return false;">RSVP</a></li> -->
       <li><a href="#" role="button" onclick="navGo('registry'); return false;">Registry</a></li>
       <li><a href="#" role="button" onclick="navGo('nyc'); return false;">Explore</a></li>
     </ul>
@@ -613,7 +613,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
         <div class="home-date">January 15, 2027</div>
         <div class="home-div"></div>
         <button class="home-enter" onclick="go('event')">Explore the Details</button>
-        <button class="home-rsvp" onclick="go('rsvp')">RSVP</button>
+        <button class="home-rsvp" onclick="go('rsvp')" style="display:none">RSVP</button>
       </div>
       <div class="home-image">
         <img src="Hotel_Sign.jpg" alt="Hotel Chelsea sign" width="4388" height="5298" loading="eager" fetchpriority="high">
@@ -815,7 +815,7 @@ async function unlock(){const h=await hashStr(document.getElementById('gate-pw')
 document.getElementById('gate-pw').addEventListener('keydown',e=>{if(e.key==='Enter')unlock()});
 let cp='home';
 function setHM(){const h=document.getElementById('hdr');h.classList.remove('dm')}
-function go(p){const c=document.getElementById('pg-'+cp);c.classList.remove('show');setTimeout(()=>{c.classList.remove('active');const n=document.getElementById('pg-'+p);n.classList.add('active');window.scrollTo({top:0,behavior:'instant'});cp=p;setHM();requestAnimationFrame(()=>{requestAnimationFrame(()=>{n.classList.add('show');n.querySelectorAll('.rv').forEach(el=>el.classList.add('vis'));if(p==='nyc'){initMap();setTimeout(()=>nycMap.invalidateSize(),100)}})})},300)}
+function go(p){if(p==='rsvp'&&!RSVP_OPEN)return;const c=document.getElementById('pg-'+cp);c.classList.remove('show');setTimeout(()=>{c.classList.remove('active');const n=document.getElementById('pg-'+p);n.classList.add('active');window.scrollTo({top:0,behavior:'instant'});cp=p;setHM();requestAnimationFrame(()=>{requestAnimationFrame(()=>{n.classList.add('show');n.querySelectorAll('.rv').forEach(el=>el.classList.add('vis'));if(p==='nyc'){initMap();setTimeout(()=>nycMap.invalidateSize(),100)}})})},300)}
 function openNav(){document.getElementById('nav-ov').classList.add('open')}
 function closeNav(){document.getElementById('nav-ov').classList.remove('open')}
 function navGo(p){closeNav();setTimeout(()=>go(p),250)}
@@ -944,6 +944,7 @@ function togFaq(btn){btn.classList.toggle('open');btn.nextElementSibling.classLi
  * Copy the URL and paste it below as APPS_SCRIPT_URL
  */
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxWHIbkcQiLujhTdIvdWYsdMRdVelYzPJrOzFJNjRfLdKy1rncaDflUyl6b-hOtj6DZ/exec';
+const RSVP_OPEN = false; // Set to true when ready to accept RSVPs
 
 let currentGuest = null;
 let submitting = false;
