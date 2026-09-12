@@ -809,9 +809,9 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
 </div>
 
 <script>
-const EXPECTED_HASH='e64a72d0a3643b36bc78ad0274c90c76a597e6508666c4d60afbf2bbd13ea94a';
+const EXPECTED_HASH='ac8f8d8803cd655d87a522ff784d56f4a522d3f685f576ad5e2030776c32990c';
 async function hashStr(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('')}
-async function unlock(){const h=await hashStr(document.getElementById('gate-pw').value);if(h===EXPECTED_HASH){document.getElementById('gate').classList.add('hidden');document.getElementById('site').classList.add('visible');setHM();initRv()}else{document.getElementById('gate-err').textContent='Incorrect password.';document.getElementById('gate-pw').value=''}}
+async function unlock(){const h=await hashStr(document.getElementById('gate-pw').value.toLowerCase());if(h===EXPECTED_HASH){document.getElementById('gate').classList.add('hidden');document.getElementById('site').classList.add('visible');setHM();initRv()}else{document.getElementById('gate-err').textContent='Incorrect password.';document.getElementById('gate-pw').value=''}}
 document.getElementById('gate-pw').addEventListener('keydown',e=>{if(e.key==='Enter')unlock()});
 let cp='home';
 function setHM(){const h=document.getElementById('hdr');h.classList.remove('dm')}
