@@ -1231,8 +1231,8 @@ let nycMap;
 function initMap(){
   if(nycMap)return;
   nycMap=L.map('nyc-map',{scrollWheelZoom:false}).setView([40.7430,-73.9900],12);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
-    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom:19
   }).addTo(nycMap);
   const icon=L.divIcon({className:'',html:'<div style="width:12px;height:12px;background:var(--near-black);border:2px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.3)"></div>',iconSize:[12,12],iconAnchor:[6,6]});
