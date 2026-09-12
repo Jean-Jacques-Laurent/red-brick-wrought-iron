@@ -597,7 +597,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
       <li><a href="#" role="button" onclick="navGo('accommodations'); return false;">Accommodations</a></li>
       <li><a href="#" role="button" onclick="navGo('travel'); return false;">Travel</a></li>
       <li><a href="#" role="button" onclick="navGo('faq'); return false;">FAQ</a></li>
-      <!-- <li><a href="#" role="button" onclick="navGo('rsvp'); return false;">RSVP</a></li> -->
+      <li><a href="#" role="button" onclick="navGo('rsvp'); return false;">RSVP</a></li>
       <li><a href="#" role="button" onclick="navGo('registry'); return false;">Registry</a></li>
       <li><a href="#" role="button" onclick="navGo('nyc'); return false;">Explore</a></li>
     </ul>
@@ -613,7 +613,7 @@ header.dm .hdr-menu-text { color: var(--warm-gray); }
         <div class="home-date">January 15, 2027</div>
         <div class="home-div"></div>
         <button class="home-enter" onclick="go('event')">Explore the Details</button>
-        <button class="home-rsvp" onclick="go('rsvp')" style="display:none">RSVP</button>
+        <button class="home-rsvp" onclick="go('rsvp')">RSVP</button>
       </div>
       <div class="home-image">
         <img src="Hotel_Sign.jpg" alt="Hotel Chelsea sign" width="4388" height="5298" loading="eager" fetchpriority="high">
@@ -944,7 +944,7 @@ function togFaq(btn){btn.classList.toggle('open');btn.nextElementSibling.classLi
  * Copy the URL and paste it below as APPS_SCRIPT_URL
  */
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxWHIbkcQiLujhTdIvdWYsdMRdVelYzPJrOzFJNjRfLdKy1rncaDflUyl6b-hOtj6DZ/exec';
-const RSVP_OPEN = false; // Set to true when ready to accept RSVPs
+const RSVP_OPEN = true; // Set to true when ready to accept RSVPs
 
 let currentGuest = null;
 let submitting = false;
